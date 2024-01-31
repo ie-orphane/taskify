@@ -1,4 +1,4 @@
-import { Alert, FlatList, Modal, Pressable, ScrollView, Text, TextInput, View } from "react-native";
+import { FlatList, Modal, Pressable, Text, TextInput, View } from "react-native";
 import { EvilIcons } from "@expo/vector-icons";
 import { useReducer, useState } from "react";
 
@@ -8,7 +8,8 @@ const projectsData = [
     tasks: [1257, 5212, 6354, 3621, 7850],
     completed: 4,
     color: "#f59e0b",
-    date: {
+    date: "Jan 27",
+    _date: {
       day: 29,
       month: 2,
       year: 2024,
@@ -19,7 +20,8 @@ const projectsData = [
     tasks: [1257, 5212, 6354],
     completed: 1,
     color: "#8b5cf6",
-    date: {
+    date: "Jan 19",
+    _date: {
       day: 16,
       month: 1,
       year: 2024,
@@ -31,8 +33,9 @@ class Project {
   constructor(data) {
     this.name = data.name;
     this.color = data.color;
+    this.date = data.date;
 
-    const percentage = (data.completed / data.tasks.length) * 100;
+    const percentage = (data.completed / data.tasks.length) * 100 || 0;
     if (percentage > 100) throw new Error("percentage is greater then 100%");
 
     const full = parseInt(percentage / 20); // w-[100%] : full
@@ -166,18 +169,19 @@ export const ProjectsComponent = () => {
             {/* add button */}
             <Pressable
               onPress={() => {
+                const now = new Date();
                 const newProject = new Project({
                   ...project,
                   tasks: [],
                   completed: 0,
-                  color: "#8b5cf6",
-                  date: {
-                    day: 16,
-                    month: 1,
-                    year: 2024,
+                  date: now.toDateString().split(" ").slice(1, -1).join(" "),
+                  _date: {
+                    day: now.getDate(),
+                    month: now.getMonth(),
+                    year: now.getFullYear(),
                   },
                 });
-                projects.push(newProject);
+                projects.unshift(newProject);
 
                 dispath({ type: "new" });
                 setModalVisible(false);
@@ -224,7 +228,7 @@ export const ProjectsComponent = () => {
             {/* foot : info */}
             <View className="flex-row items-center">
               <EvilIcons name="calendar" size={28} color="rgba(255,255,255,.5)" />
-              <Text className="text-white/50">Dec 25</Text>
+              <Text className="text-white/50">{item.date}</Text>
             </View>
           </View>
         )}
