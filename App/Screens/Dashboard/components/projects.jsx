@@ -1,11 +1,13 @@
 import { FlatList, Modal, Pressable, Text, TextInput, View } from "react-native";
 import { EvilIcons } from "@expo/vector-icons";
 import { useReducer, useState } from "react";
+import { Link, useNavigation } from "@react-navigation/native";
 
 const projectsData = [
   {
+    id: "0p1245",
     name: "Crypto Wallet Redesign",
-    tasks: [1257, 5212, 6354, 3621, 7850],
+    tasks: ["0t1257", "0t5212", "0t6354", "0t3621", "0t7850"],
     completed: 4,
     color: "#f59e0b",
     date: "Jan 27",
@@ -17,7 +19,7 @@ const projectsData = [
   },
   {
     name: "Buxica Dribble Team",
-    tasks: [1257, 5212, 6354],
+    tasks: ["0t1257", "0t5212", "0t6354"],
     completed: 1,
     color: "#8b5cf6",
     date: "Jan 19",
@@ -71,6 +73,7 @@ export const ProjectsComponent = () => {
     "#d946ef",
     "#f43f5e",
   ];
+  const navigate = useNavigation();
 
   const reducer = (state, action) => {
     switch (action.type) {
@@ -91,12 +94,12 @@ export const ProjectsComponent = () => {
   const [project, dispath] = useReducer(reducer, { name: "", description: "", color: "" });
 
   return (
-    <View className="px-8 py-4 bg-white/25">
+    <View className="px-8 py-4 bg-white/75">
       <View className="flex-row items-center justify-between pb-6">
         {/* heading & description */}
         <View>
           <Text className="text-3xl font-bold">Projects</Text>
-          <Text className="text-black/50 text-lg">
+          <Text className="text-black/30 text-lg font-medium">
             You have
             <Text className="text-main font-medium"> {projects.length} </Text>
             Projects
@@ -110,10 +113,18 @@ export const ProjectsComponent = () => {
       </View>
 
       {/* add new project modal */}
-      <Modal animationType="fade"  transparent={true} visible={modalVisible}>
-        <Pressable onPress={() => setModalVisible(false)} className="content-center h-screen bg-black/[62.5%] justify-end">
+      <Modal animationType="fade" transparent={true} visible={modalVisible}>
+        <Pressable
+          onPress={() => setModalVisible(false)}
+          className="content-center h-screen bg-black/[62.5%] justify-end"
+        >
           {/* modal body */}
-          <Pressable className="bg-white self-end py-10 px-8 rounded-t-[50]" onPress={(e) => {e.stopPropagation()}}>
+          <Pressable
+            className="bg-white self-end py-10 px-8 rounded-t-[50]"
+            onPress={(e) => {
+              e.stopPropagation();
+            }}
+          >
             {/* title */}
             <Text className="text-3xl font-bold mb-6">Create New Project</Text>
             {/* project name */}
@@ -197,7 +208,8 @@ export const ProjectsComponent = () => {
         horizontal={true}
         showsHorizontalScrollIndicator={false}
         renderItem={({ item, index }) => (
-          <View
+          <Pressable
+            onPress={() => navigate.navigate("Project")}
             style={{ backgroundColor: item.color + "c0" }}
             className={`rounded-lg px-7 py-5 w-[275] ${index != 0 ? "ml-3 " : " "}`}
           >
@@ -227,7 +239,7 @@ export const ProjectsComponent = () => {
               <EvilIcons name="calendar" size={28} color="rgba(255,255,255,.5)" />
               <Text className="text-white/50">{item.date}</Text>
             </View>
-          </View>
+          </Pressable>
         )}
       />
     </View>
