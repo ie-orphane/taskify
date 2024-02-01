@@ -59,8 +59,8 @@ const projects = projectsData.map((data) => new Project(data));
 
 export const ProjectsComponent = () => {
   const [modalVisible, setModalVisible] = useState(false);
-
   const [radioSelected, setRadioSelected] = useState(0);
+
   const radioOptions = [
     "#f59e0b",
     "#84cc16",
@@ -110,40 +110,37 @@ export const ProjectsComponent = () => {
       </View>
 
       {/* add new project modal */}
-      <Modal animationType="slide" transparent={false} visible={modalVisible}>
-        <View className="pt-20 px-10 content-center h-screen">
-          {/* close button */}
-          <Pressable className="absolute left-4 top-4" onPress={() => setModalVisible(false)}>
-            <Text className="text-xl text-black/50">{"<- "}Go back</Text>
-          </Pressable>
-
+      <Modal animationType="fade"  transparent={true} visible={modalVisible}>
+        <Pressable onPress={() => setModalVisible(false)} className="content-center h-screen bg-black/[62.5%] justify-end">
           {/* modal body */}
-          <View>
+          <Pressable className="bg-white self-end py-10 px-8 rounded-t-[50]" onPress={(e) => {e.stopPropagation()}}>
+            {/* title */}
+            <Text className="text-3xl font-bold mb-6">Create New Project</Text>
             {/* project name */}
             <View>
-              <Text className="text-xl font-medium text-black/75 pb-2">Project's Name:</Text>
+              <Text className="text-xl font-bold text-black/75 mb-2">Project Name</Text>
               <TextInput
                 value={project.name}
                 onChangeText={(text) => dispath({ type: "name", value: text })}
-                className="text-xl"
-                placeholder="new Project"
+                className="text-xl bg-black/5 py-3 px-5 rounded-xl"
+                placeholder="Enter Project Name"
               />
             </View>
 
             {/* project description */}
             <View className="mt-6">
-              <Text className="text-xl font-medium text-black/75 pb-2">Project's Description:</Text>
+              <Text className="text-xl font-bold text-black/75 mb-2">Project Description</Text>
               <TextInput
                 value={project.description}
                 onChangeText={(text) => dispath({ type: "description", value: text })}
-                className="text-xl"
-                placeholder="a random project ...."
+                className="text-xl bg-black/5 py-3 px-5 rounded-xl"
+                placeholder="Enter Project Description"
               />
             </View>
 
             {/* project color */}
             <View className="mt-6 mb-8">
-              <Text className="text-xl font-medium text-black/75 pb-3">Choose a color:</Text>
+              <Text className="text-xl font-bold text-black/75 mb-3">Choose a color:</Text>
               <View className="flex-wrap flex-row px-12 justify-center">
                 {radioOptions.map((option, index) => (
                   <Pressable
@@ -186,12 +183,12 @@ export const ProjectsComponent = () => {
                 dispath({ type: "new" });
                 setModalVisible(false);
               }}
-              className="bg-main/5 py-2 rounded-lg"
+              className="bg-main/5 py-4 rounded-3xl"
             >
               <Text className="text-main/75 text-xl font-medium self-center">Add Project</Text>
             </Pressable>
-          </View>
-        </View>
+          </Pressable>
+        </Pressable>
       </Modal>
 
       <FlatList
