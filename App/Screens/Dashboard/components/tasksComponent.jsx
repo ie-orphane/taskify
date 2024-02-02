@@ -23,9 +23,17 @@ const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", 
 
 export const TasksComponent = () => {
   const now = new Date();
+  const { Task, Tasks, Projects } = useAppContext();
   const [modalVisible, setModalVisible] = useState(false);
+  const [dropdownVisible, setDropdownVisible] = useState(false);
   const [filterSelected, setFilterSelected] = useState("All");
-  const { Task, Tasks } = useAppContext();
+
+  const filters = {
+    All: Tasks.state,
+    Today: Tasks.state.filter((task) => task._date.day == now.getDate()),
+    "to do": Tasks.state.filter((task) => !task.completed),
+    Completed: Tasks.state.filter((task) => task.completed),
+  };
 
   return (
     <View className="px-8 py-6 h-full">
@@ -60,7 +68,7 @@ export const TasksComponent = () => {
           >
             {/* title */}
             <Text className="text-3xl font-bold mb-6">Create New Task</Text>
-            {/* project name */}
+            {/* task name */}
             <View>
               <Text className="text-xl font-bold text-black/75 mb-2">Task Name</Text>
               <TextInput
@@ -71,7 +79,7 @@ export const TasksComponent = () => {
               />
             </View>
 
-            {/* project description */}
+            {/* task description */}
             <View className="mt-6">
               <Text className="text-xl font-bold text-black/75 mb-2">Task Note</Text>
               <TextInput
@@ -82,56 +90,78 @@ export const TasksComponent = () => {
               />
             </View>
 
-            {/* project color */}
-            {/* <View className="mt-6 mb-8">
-              <Text className="text-xl font-bold text-black/75 mb-3">Choose a color:</Text>
-              <View className="flex-wrap flex-row px-12 justify-center">
-                {radioOptions.map((option, index) => (
-                  <Pressable
-                    key={index}
-                    onPress={() => {
-                      setRadioSelected(index);
-                      dispath({ type: "color", value: option });
-                    }}
-                  >
-                    <View
-                      style={{ borderColor: option }}
-                      className={`w-[50] h-[50] items-center justify-center rounded-lg ${
-                        index == radioSelected ? "border-2" : ""
-                      }`}
-                    >
-                      <View style={{ backgroundColor: option }} className="w-[40] h-[40] rounded" />
-                    </View>
-                  </Pressable>
-                ))}
-              </View>
-            </View> */}
+            {/* task collection */}
+            <View className="mt-6">
+              <Text className="text-xl font-bold text-black/75 mb-3">Task Collection</Text>
+              <Pressable
+                onPress={() => setDropdownVisible(!dropdownVisible)}
+                className="bg-black/5 py-3 px-5 rounded-xl flex-row justify-between"
+              >
+                {Task.state.collection == "" ? (
+                  <Text className="text-xl text-black/[37.5%]">Choose a collection</Text>
+                ) : (
+                  <Text className="text-xl">{Task.state.collection}</Text>
+                )}
+
+                <Entypo
+                  name={dropdownVisible ? "chevron-up" : "chevron-right"}
+                  size={24}
+                  color="#000b"
+                />
+              </Pressable>
+              {dropdownVisible ? (
+                <View className="absolute bg-white border border-black/25 w-full rounded-xl bottom-2/3">
+                  {Projects.state
+                    .filter((item) => item.name != Task.state.collection)
+                    .map((item, index) => (
+                      <Pressable
+                        key={index}
+                        onPress={() => {
+                          Task.dispatch({ type: "collection", value: item.name });
+                          setDropdownVisible(!dropdownVisible);
+                        }}
+                      >
+                        <Text
+                          className={`text-xl py-3 px-5 ${
+                            index != Projects.state.length - 1
+                              ? "border-b border-black/[12.5%]"
+                              : ""
+                          }`}
+                        >
+                          {item.name}
+                        </Text>
+                      </Pressable>
+                    ))}
+                </View>
+              ) : null}
+            </View>
 
             {/* add button */}
             <Pressable
               onPress={() => {
                 const now = new Date();
-                const newProject = new Project({
-                  ...project,
-                  tasks: [],
-                  completed: 0,
-                  date: now.toDateString().split(" ").slice(1, -1).join(" "),
+                const newTask = {
+                  ...Task.state,
+                  completed: false,
+                  // start: "10:00 PM",
+                  // end: "11:45 PM",
+                  date: "1 February",
                   _date: {
                     day: now.getDate(),
                     month: now.getMonth(),
                     year: now.getFullYear(),
                   },
-                });
-                projects.unshift(newProject);
-
+                };
+                // add new projects item to state
+                Tasks.dispatch({ type: "new", value: newTask });
                 // reset the state the iniale value
-                Task.dispatch({ type: "new" });
+                Task.dispatch({ type: "reset" });
                 // hide the modal
                 setModalVisible(false);
               }}
               className="bg-main/5 py-4 rounded-3xl mt-8"
             >
-              <Text className="text-main/75 text-xl font-medium self-center">Add Project</Text>
+              <Text className="text-main/75 text-xl font-medium self-center">Add Task</Text>
             </Pressable>
           </Pressable>
         </Pressable>
@@ -141,12 +171,7 @@ export const TasksComponent = () => {
       <View>
         {/* tasks filter */}
         <View className="flex-row justify-between">
-          {[
-            ["All", Tasks.state.length],
-            ["Today", Tasks.state.filter((task) => task._date.day == now.getDate()).length],
-            ["to do", Tasks.state.filter((task) => !task.completed).length],
-            ["Completed", Tasks.state.filter((task) => task.completed).length],
-          ].map(([title, count], index) => (
+          {Object.entries(filters).map(([title, correspondTasks], index) => (
             <Pressable
               key={index}
               onPress={() => setFilterSelected(title)}
@@ -162,7 +187,7 @@ export const TasksComponent = () => {
                 style={{ backgroundColor: filterSelected == title ? "#0057fb" : "#0000001f" }}
                 className="bg-main rounded-full w-[16] h-[16] items-center justify-center"
               >
-                <Text className="text-white text-xs">{count}</Text>
+                <Text className="text-white text-xs">{correspondTasks.length}</Text>
               </View>
               {title == "All" && (
                 <View className="bg-black/[12.5%] w-[2] h-[20] absolute -right-1/2 rounded" />
@@ -174,7 +199,7 @@ export const TasksComponent = () => {
         {/* tasks */}
         <FlatList
           className="mt-8 max-h-[40vh]"
-          data={Tasks.state}
+          data={filters[filterSelected]}
           keyExtractor={(_, index) => index.toString()}
           showsVerticalScrollIndicator={false}
           renderItem={({ item, index }) => (
@@ -185,13 +210,11 @@ export const TasksComponent = () => {
                   <Text className={`text-xl font-medium ${item.completed ? "line-through" : ""}`}>
                     {item.name}
                   </Text>
-                  <Text className="font-medium text-black/50">{item.project.name}</Text>
+                  <Text className="font-medium text-black/50">{item.collection}</Text>
                 </View>
                 {/* completed mark */}
                 <Pressable
-                  onPress={() =>
-                    Tasks.dispatch({ type: "completed", index: index, value: !item.completed })
-                  }
+                  onPress={() => Tasks.dispatch({ type: "completed", value: item.id })}
                   style={
                     item.completed
                       ? { backgroundColor: COLORS.primary }

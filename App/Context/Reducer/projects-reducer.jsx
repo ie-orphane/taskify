@@ -1,4 +1,4 @@
-import { Classes } from "../utils";
+import { Classes } from "../../utils";
 
 const projectsData = [
   {
@@ -35,7 +35,7 @@ const reducer = (state, action) => {
     case "new":
       return [action.value, ...state];
     default:
-      throw new Error(`undefiened action type: ${action.type}`);
+      throw new Error(`${name} reducer : undefiened action type: ${action.type}`);
   }
 };
 

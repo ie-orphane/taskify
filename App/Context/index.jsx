@@ -1,5 +1,5 @@
 import { createContext, useContext, useReducer, useState } from "react";
-import { Task, Tasks, Project, Projects } from "../Reducer";
+import { Task, Tasks, Project, Projects } from "./Reducer";
 
 const appContext = createContext();
 

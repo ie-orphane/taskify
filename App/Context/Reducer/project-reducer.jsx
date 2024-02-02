@@ -11,7 +11,7 @@ const reducer = (state, action) => {
     case "reset":
       return { name: "", description: "", color: "" };
     default:
-      throw new Error(`undefiened action type: ${action.type}`);
+      throw new Error(`${name} reducer : undefiened action type: ${action.type}`);
   }
 };
 

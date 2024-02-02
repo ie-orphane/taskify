@@ -1,26 +1,24 @@
 const name = "Tasks";
 
-const reducer = (state, action) => {
-  switch (action.type) {
+const reducer = (state, {type, value}) => {
+  switch (type) {
     case "completed":
-      state[action.index].completed = action.value;
+      const current = state.find(item => item.id == value)
+      current.completed = !current.completed;
       return [...state];
     case "new":
-      return [...state, action.value];
+      return [value, ...state];
     default:
-      throw new Error(`undefiened action type: ${action.type}`);
+      throw new Error(`${name} reducer : undefiened action type: ${type}`);
   }
 };
 
 const initializer = [
   {
-    id: "0t0002",
+    id: 0,
     name: "Client Review & Feedback",
     description: "get client reviews and feedbacks",
-    project: {
-      id: "0p0001",
-      name: "Crypto Wallet Redesign",
-    },
+    collection: "Crypto Wallet Redesign",
     completed: true,
     start: "10:00 PM",
     end: "11:45 PM",
@@ -32,13 +30,10 @@ const initializer = [
     },
   },
   {
-    id: "0t0001",
+    id: 1,
     name: "Review with Client",
     description: "get client reviews and feedbacks",
-    project: {
-      id: "0p0001",
-      name: "Buxica Dribble Team",
-    },
+    collection: "Buxica Dribble Team",
     completed: false,
     start: "10:00 PM",
     end: "11:45 PM",
@@ -50,13 +45,10 @@ const initializer = [
     },
   },
   {
-    id: "0t0000",
+    id: 2,
     name: "Review with Client",
     description: "get client reviews and feedbacks",
-    project: {
-      id: "0p0001",
-      name: "Buxica Dribble Team",
-    },
+    collection: "Buxica Dribble Team",
     completed: false,
     start: "10:00 PM",
     end: "11:45 PM",
