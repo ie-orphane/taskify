@@ -1,67 +1,14 @@
 import { FlatList, Modal, Pressable, Text, TextInput, View } from "react-native";
 import { EvilIcons } from "@expo/vector-icons";
-import { useReducer, useState } from "react";
-import { Link, useNavigation } from "@react-navigation/native";
-
-const projectsData = [
-  {
-    id: "0p1245",
-    name: "Crypto Wallet Redesign",
-    tasks: ["0t1257", "0t5212", "0t6354", "0t3621", "0t7850"],
-    completed: 4,
-    color: "#f59e0b",
-    date: "Jan 27",
-    _date: {
-      day: 29,
-      month: 2,
-      year: 2024,
-    },
-  },
-  {
-    name: "Buxica Dribble Team",
-    tasks: ["0t1257", "0t5212", "0t6354"],
-    completed: 1,
-    color: "#8b5cf6",
-    date: "Jan 19",
-    _date: {
-      day: 16,
-      month: 1,
-      year: 2024,
-    },
-  },
-];
-
-class Project {
-  constructor(data) {
-    this.name = data.name;
-    this.color = data.color;
-    this.date = data.date;
-
-    const percentage = (data.completed / data.tasks.length) * 100 || 0;
-    if (percentage > 100) throw new Error("percentage is greater then 100%");
-
-    const full = parseInt(percentage / 20); // w-[100%] : full
-    const rest = parseInt(percentage % 20); // w-[~%] : rest
-    const none = 5 - Math.min(parseInt(percentage % 20), 1) - parseInt(percentage / 20); // w-0 : none
-
-    this.bar = [
-      ...Array.from({ length: full }, () => {
-        return { width: "100%" };
-      }),
-      ...(rest != 0 ? [{ width: `${rest}%` }] : []),
-      ...Array.from({ length: none }, () => {
-        return { width: 0 };
-      }),
-    ];
-    this.per = parseInt(percentage);
-  }
-}
-
-const projects = projectsData.map((data) => new Project(data));
+import { useState } from "react";
+import { useNavigation } from "@react-navigation/native";
+import { Classes } from "../../../utils";
+import { useAppContext } from "../../../Context";
 
 export const ProjectsComponent = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [radioSelected, setRadioSelected] = useState(0);
+  const { Project, Projects } = useAppContext();
 
   const radioOptions = [
     "#f59e0b",
@@ -73,35 +20,19 @@ export const ProjectsComponent = () => {
     "#d946ef",
     "#f43f5e",
   ];
+
   const navigate = useNavigation();
-
-  const reducer = (state, action) => {
-    switch (action.type) {
-      case "name":
-        // throw new Error("eroror")
-        return { ...state, name: action.value };
-      case "description":
-        return { ...state, description: action.value };
-      case "color":
-        return { ...state, color: action.value };
-      case "new":
-        return { name: "", description: "", color: "" };
-      default:
-        throw new Error("undefiened action.type");
-    }
-  };
-
-  const [project, dispath] = useReducer(reducer, { name: "", description: "", color: "" });
 
   return (
     <View className="px-8 py-4 bg-white/75">
+      {/* Header & add button */}
       <View className="flex-row items-center justify-between pb-6">
         {/* heading & description */}
         <View>
           <Text className="text-3xl font-bold">Projects</Text>
           <Text className="text-black/30 text-lg font-medium">
             You have
-            <Text className="text-main font-medium"> {projects.length} </Text>
+            <Text className="text-main font-medium"> {Projects.state.length} </Text>
             Projects
           </Text>
         </View>
@@ -131,8 +62,8 @@ export const ProjectsComponent = () => {
             <View>
               <Text className="text-xl font-bold text-black/75 mb-2">Project Name</Text>
               <TextInput
-                value={project.name}
-                onChangeText={(text) => dispath({ type: "name", value: text })}
+                value={Project.state.name}
+                onChangeText={(text) => Project.dispatch({ type: "name", value: text })}
                 className="text-xl bg-black/5 py-3 px-5 rounded-xl"
                 placeholder="Enter Project Name"
               />
@@ -142,15 +73,15 @@ export const ProjectsComponent = () => {
             <View className="mt-6">
               <Text className="text-xl font-bold text-black/75 mb-2">Project Description</Text>
               <TextInput
-                value={project.description}
-                onChangeText={(text) => dispath({ type: "description", value: text })}
+                value={Project.state.description}
+                onChangeText={(text) => Project.dispatch({ type: "description", value: text })}
                 className="text-xl bg-black/5 py-3 px-5 rounded-xl"
                 placeholder="Enter Project Description"
               />
             </View>
 
             {/* project color */}
-            <View className="mt-6 mb-8">
+            <View className="mt-6">
               <Text className="text-xl font-bold text-black/75 mb-3">Choose a color:</Text>
               <View className="flex-wrap flex-row px-12 justify-center">
                 {radioOptions.map((option, index) => (
@@ -158,7 +89,7 @@ export const ProjectsComponent = () => {
                     key={index}
                     onPress={() => {
                       setRadioSelected(index);
-                      dispath({ type: "color", value: option });
+                      Project.dispatch({ type: "color", value: option });
                     }}
                   >
                     <View
@@ -178,8 +109,9 @@ export const ProjectsComponent = () => {
             <Pressable
               onPress={() => {
                 const now = new Date();
-                const newProject = new Project({
-                  ...project,
+                // create new projects item
+                const newProject = new Classes.Project({
+                  ...Project.state,
                   tasks: [],
                   completed: 0,
                   date: now.toDateString().split(" ").slice(1, -1).join(" "),
@@ -189,12 +121,14 @@ export const ProjectsComponent = () => {
                     year: now.getFullYear(),
                   },
                 });
-                projects.unshift(newProject);
-
-                dispath({ type: "new" });
+                // add new projects item to state
+                Projects.dispatch({ type: "new", value: newProject });
+                // reset state to initiale value
+                Project.dispatch({ type: "reset" });
+                // hide modal
                 setModalVisible(false);
               }}
-              className="bg-main/5 py-4 rounded-3xl"
+              className="bg-main/5 py-4 rounded-3xl mt-8"
             >
               <Text className="text-main/75 text-xl font-medium self-center">Add Project</Text>
             </Pressable>
@@ -202,8 +136,9 @@ export const ProjectsComponent = () => {
         </Pressable>
       </Modal>
 
+      {/* projects */}
       <FlatList
-        data={projects}
+        data={Projects.state}
         keyExtractor={(_, index) => index.toString()}
         horizontal={true}
         showsHorizontalScrollIndicator={false}

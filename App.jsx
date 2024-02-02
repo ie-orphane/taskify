@@ -1,15 +1,15 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { StatusBar } from "react-native";
 import { TabNavigation } from "./app/Navigations/tabNavigation";
-import { HomeRouteProvider } from "./app/Context/homeRouteContext";
+import { AppProvider } from "./app/Context";
 
 export default function MyComponent() {
   return (
-    <HomeRouteProvider>
+    <AppProvider>
       <NavigationContainer>
         <TabNavigation />
       </NavigationContainer>
       <StatusBar />
-    </HomeRouteProvider>
+    </AppProvider>
   );
 }

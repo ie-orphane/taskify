@@ -1,5 +1,5 @@
-import { ProjectsComponent } from "./components/projects";
-import { TasksComponent } from "./components/tasks";
+import { ProjectsComponent } from "./components/projectsComponent";
+import { TasksComponent } from "./components/tasksComponent";
 
 export const DashboardScreen = () => {
   return (

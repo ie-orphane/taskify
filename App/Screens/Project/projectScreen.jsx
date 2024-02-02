@@ -1,14 +1,14 @@
-import { useContext, useEffect } from "react";
-import { HomeRouteContext } from "../../Context/homeRouteContext";
+import { useEffect } from "react";
+import { useAppContext } from "../../Context";
 import { Text } from "react-native";
 
 export const ProjectScreen = ({ route }) => {
-  const [_, setHomeRoute] = useContext(HomeRouteContext);
+  const { setHomeRoute } = useAppContext();
 
   useEffect(() => {
     setHomeRoute(route.name);
     return () => setHomeRoute("Dashboard");
-  }, [route]);
+  }, []);
 
   return <Text>sala al 3alam</Text>;
 };

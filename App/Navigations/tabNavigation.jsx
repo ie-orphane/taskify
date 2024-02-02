@@ -3,14 +3,13 @@ import { Entypo, FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons"
 import { ProfileScreen } from "../Screens/Profile/profileScreen";
 import { BoardScreen } from "../Screens/Board/boardScreen";
 import { COLORS } from "../../constants";
-import { useContext } from "react";
-import { HomeRouteContext } from "../Context/homeRouteContext";
+import { useAppContext } from "../Context";
 import { HomeNavigation } from "./homeNavigation";
 
 const tab = createBottomTabNavigator();
 
 export const TabNavigation = () => {
-  const [homeRoute, _] = useContext(HomeRouteContext);
+  const { homeRoute } = useAppContext();
 
   return (
     <tab.Navigator screenOptions={{ headerShown: false }}>
