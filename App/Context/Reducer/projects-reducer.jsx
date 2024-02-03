@@ -30,12 +30,12 @@ const projectsData = [
 
 const name = "Projects";
 
-const reducer = (state, action) => {
-  switch (action.type) {
+const reducer = (state, { type, value }) => {
+  switch (type) {
     case "new":
-      return [action.value, ...state];
+      return [value, ...state];
     default:
-      throw new Error(`${name} reducer : undefiened action type: ${action.type}`);
+      throw new Error(`${name} reducer : undefiened action type: ${type}`);
   }
 };
 

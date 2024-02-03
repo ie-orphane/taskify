@@ -31,7 +31,7 @@ export const TasksComponent = () => {
   const filters = {
     All: Tasks.state,
     Today: Tasks.state.filter((task) => task._date.day == now.getDate()),
-    "to do": Tasks.state.filter((task) => !task.completed),
+    Pending: Tasks.state.filter((task) => !task.completed),
     Completed: Tasks.state.filter((task) => task.completed),
   };
 

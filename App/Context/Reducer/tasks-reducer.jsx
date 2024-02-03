@@ -1,9 +1,9 @@
 const name = "Tasks";
 
-const reducer = (state, {type, value}) => {
+const reducer = (state, { type, value }) => {
   switch (type) {
     case "completed":
-      const current = state.find(item => item.id == value)
+      const current = state.find((item) => item.id == value);
       current.completed = !current.completed;
       return [...state];
     case "new":
