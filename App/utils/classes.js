@@ -1,9 +1,19 @@
-class Project {
+class Collection {
   constructor(data) {
+    this.id = data.id;
     this.name = data.name;
     this.color = data.color;
-    this.date = data.date;
 
+    // date time
+    const datetime = data.datetime.toDate();
+    this.date = datetime.toDateString().split(" ").slice(1, -1).join(" ");
+    this._date = {
+      day: datetime.getDate(),
+      month: datetime.getMonth(),
+      year: datetime.getFullYear(),
+    };
+
+    // progress bar
     const percentage = (data.completed / data.tasks.length) * 100 || 0;
     if (percentage > 100) throw new Error("percentage is greater then 100%");
 
@@ -24,4 +34,10 @@ class Project {
   }
 }
 
-export { Project };
+class Task {
+  constructor(data) {
+    console.log(data);
+  }
+}
+
+export { Collection, Task };

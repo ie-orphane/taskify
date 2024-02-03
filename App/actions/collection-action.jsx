@@ -1,14 +1,14 @@
-const name = "Project";
+const name = "Collection";
 
 const reducer = (state, { type, value }) => {
   switch (type) {
-    case "name":
+    case "NAME":
       return { ...state, name: value };
-    case "description":
+    case "DESCRIPTION":
       return { ...state, description: value };
-    case "color":
+    case "COLOR":
       return { ...state, color: value };
-    case "reset":
+    case "RESET":
       return { name: "", description: "", color: "" };
     default:
       throw new Error(`${name} reducer : undefiened action type: ${type}`);

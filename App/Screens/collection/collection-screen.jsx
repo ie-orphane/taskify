@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useAppContext } from "../../Context";
 import { Text } from "react-native";
 
-export const ProjectScreen = ({ route }) => {
+export const CollectionScreen = ({ route }) => {
   const { setHomeRoute } = useAppContext();
 
   useEffect(() => {

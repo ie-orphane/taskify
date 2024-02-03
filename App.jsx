@@ -1,15 +1,15 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { StatusBar } from "react-native";
-import { TabNavigation } from "./app/Navigations/tabNavigation";
+import { AuthNavigation } from "./app/Navigations/auth-navigation";
 import { AppProvider } from "./app/Context";
 
 export default function MyComponent() {
   return (
     <AppProvider>
       <NavigationContainer>
-        <TabNavigation />
+        <AuthNavigation />
+        <StatusBar style="auto" />
       </NavigationContainer>
-      <StatusBar />
     </AppProvider>
   );
 }

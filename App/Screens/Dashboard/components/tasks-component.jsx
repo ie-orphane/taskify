@@ -3,36 +3,23 @@ import { FlatList, Modal, Pressable, Text, TextInput, View } from "react-native"
 import { Entypo } from "@expo/vector-icons";
 import { COLORS } from "../../../../constants";
 import { useAppContext } from "../../../Context";
-
-const months = [
-  "January",
-  "February",
-  "March",
-  "April",
-  "May",
-  "June",
-  "July",
-  "August",
-  "September",
-  "October",
-  "November",
-  "December",
-];
-
-const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+import { useCollections, useTasks } from "../../../hooks";
 
 export const TasksComponent = () => {
   const now = new Date();
-  const { Task, Tasks, Projects } = useAppContext();
+  // const { Task, Tasks, Projects } = useAppContext();
   const [modalVisible, setModalVisible] = useState(false);
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [filterSelected, setFilterSelected] = useState("All");
 
+  const [tasksState, tasksDispatch] = useTasks()
+  const [collectionsState, collectionsDispatch] = useCollections()
+
   const filters = {
-    All: Tasks.state,
-    Today: Tasks.state.filter((task) => task._date.day == now.getDate()),
-    Pending: Tasks.state.filter((task) => !task.completed),
-    Completed: Tasks.state.filter((task) => task.completed),
+    All: tasksState,
+    Today: tasksState.filter((task) => task._date.day == now.getDate()),
+    Pending: tasksState.filter((task) => !task.completed),
+    Completed: tasksState.filter((task) => task.completed),
   };
 
   return (
@@ -72,7 +59,7 @@ export const TasksComponent = () => {
             <View>
               <Text className="text-xl font-bold text-black/75 mb-2">Task Name</Text>
               <TextInput
-                value={Task.state.name}
+                value={"Task.state.name"}
                 onChangeText={(text) => Task.dispatch({ type: "name", value: text })}
                 className="text-xl bg-black/5 py-3 px-5 rounded-xl"
                 placeholder="Enter Task Name"
@@ -83,7 +70,7 @@ export const TasksComponent = () => {
             <View className="mt-6">
               <Text className="text-xl font-bold text-black/75 mb-2">Task Note</Text>
               <TextInput
-                value={Task.state.description}
+                value={"Task.state.description"}
                 onChangeText={(text) => Task.dispatch({ type: "note", value: text })}
                 className="text-xl bg-black/5 py-3 px-5 rounded-xl"
                 placeholder="Enter Task Note"
@@ -100,7 +87,7 @@ export const TasksComponent = () => {
                 {Task.state.collection == "" ? (
                   <Text className="text-xl text-black/[37.5%]">Choose a collection</Text>
                 ) : (
-                  <Text className="text-xl">{Task.state.collection}</Text>
+                  <Text className="text-xl">{"Task.state.collection"}</Text>
                 )}
 
                 <Entypo
@@ -111,8 +98,8 @@ export const TasksComponent = () => {
               </Pressable>
               {dropdownVisible ? (
                 <View className="absolute bg-white border border-black/25 w-full rounded-xl bottom-2/3">
-                  {Projects.state
-                    .filter((item) => item.name != Task.state.collection)
+                  {collectionsState
+                    .filter((item) => item.name != "Task.state.collection")
                     .map((item, index) => (
                       <Pressable
                         key={index}
@@ -123,7 +110,7 @@ export const TasksComponent = () => {
                       >
                         <Text
                           className={`text-xl py-3 px-5 ${
-                            index != Projects.state.length - 1
+                            index != collectionsState.length - 1
                               ? "border-b border-black/[12.5%]"
                               : ""
                           }`}
@@ -141,7 +128,7 @@ export const TasksComponent = () => {
               onPress={() => {
                 const now = new Date();
                 const newTask = {
-                  ...Task.state,
+                  // ...Task.state,
                   completed: false,
                   // start: "10:00 PM",
                   // end: "11:45 PM",

@@ -1,10 +1,9 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Entypo, FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
-import { ProfileScreen } from "../Screens/Profile/profileScreen";
-import { BoardScreen } from "../Screens/Board/boardScreen";
 import { COLORS } from "../../constants";
 import { useAppContext } from "../Context";
-import { HomeNavigation } from "./homeNavigation";
+import { HomeNavigation } from "./home-navigation";
+import { ProfileScreen, BoardScreen } from "../Screens";
 
 const tab = createBottomTabNavigator();
 

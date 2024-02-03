@@ -1,25 +1,24 @@
 import { createContext, useContext, useReducer, useState } from "react";
-import { Task, Tasks, Project, Projects } from "./Reducer";
+import { Task, Collection } from "../actions";
 
 const appContext = createContext();
 
 const AppProvider = ({ children }) => {
   const [homeRoute, setHomeRoute] = useState("Dashboard");
+  const [user, setUser] = useState(null);
 
-  const [taskState, taskDispatch] = useReducer(Task.reducer, Task.initializer);
-  const [tasksState, tasksDispatch] = useReducer(Tasks.reducer, Tasks.initializer);
-  const [projectState, projectDispatch] = useReducer(Project.reducer, Project.initializer);
-  const [projectsState, projectsDispatch] = useReducer(Projects.reducer, Projects.initializer);
+  // const [taskState, taskDispatch] = useReducer(Task.reducer, Task.initializer);
+  // const [projectState, projectDispatch] = useReducer(Project.reducer, Project.initializer);
 
   return (
     <appContext.Provider
       value={{
         homeRoute: homeRoute,
         setHomeRoute: setHomeRoute,
-        Task: { state: taskState, dispatch: taskDispatch },
-        Tasks: { state: tasksState, dispatch: tasksDispatch },
-        Project: { state: projectState, dispatch: projectDispatch },
-        Projects: { state: projectsState, dispatch: projectsDispatch },
+        user: user,
+        setUser: setUser,
+        // Task: { state: taskState, dispatch: taskDispatch },
+        // Project: { state: projectState, dispatch: projectDispatch },
       }}
     >
       {children}

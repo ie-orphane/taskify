@@ -2,11 +2,11 @@ const name = "Tasks";
 
 const reducer = (state, { type, value }) => {
   switch (type) {
-    case "completed":
+    case "COMPLETED":
       const current = state.find((item) => item.id == value);
       current.completed = !current.completed;
       return [...state];
-    case "new":
+    case "NEW":
       return [value, ...state];
     default:
       throw new Error(`${name} reducer : undefiened action type: ${type}`);

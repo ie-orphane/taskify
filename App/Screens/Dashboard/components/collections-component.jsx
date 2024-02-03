@@ -2,13 +2,16 @@ import { FlatList, Modal, Pressable, Text, TextInput, View } from "react-native"
 import { EvilIcons } from "@expo/vector-icons";
 import { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { Classes } from "../../../utils";
 import { useAppContext } from "../../../Context";
+import { useCollections } from "../../../hooks";
+import { Collection } from "../../../utils/classes";
 
-export const ProjectsComponent = () => {
+export const CollectionsComponent = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [radioSelected, setRadioSelected] = useState(0);
-  const { Project, Projects } = useAppContext();
+  const { user, Project } = useAppContext();
+  const [state, dispatch] = useCollections();
+  console.log(state);
 
   const radioOptions = [
     "#f59e0b",
@@ -29,11 +32,11 @@ export const ProjectsComponent = () => {
       <View className="flex-row items-center justify-between pb-6">
         {/* heading & description */}
         <View>
-          <Text className="text-3xl font-bold">Projects</Text>
+          <Text className="text-3xl font-bold">Collections</Text>
           <Text className="text-black/30 text-lg font-medium">
             You have
-            <Text className="text-main font-medium"> {Projects.state.length} </Text>
-            Projects
+            <Text className="text-main font-medium"> {state.length} </Text>
+            Collections
           </Text>
         </View>
 
@@ -43,7 +46,7 @@ export const ProjectsComponent = () => {
         </Pressable>
       </View>
 
-      {/* add new project modal */}
+      {/* add new collection modal */}
       <Modal animationType="fade" transparent={true} visible={modalVisible}>
         <Pressable
           onPress={() => setModalVisible(false)}
@@ -57,12 +60,12 @@ export const ProjectsComponent = () => {
             }}
           >
             {/* title */}
-            <Text className="text-3xl font-bold mb-6">Create New Project</Text>
+            <Text className="text-3xl font-bold mb-6">Create New Collection</Text>
             {/* project name */}
             <View>
               <Text className="text-xl font-bold text-black/75 mb-2">Project Name</Text>
               <TextInput
-                value={Project.state.name}
+                value={"Project.state.name"}
                 onChangeText={(text) => Project.dispatch({ type: "name", value: text })}
                 className="text-xl bg-black/5 py-3 px-5 rounded-xl"
                 placeholder="Enter Project Name"
@@ -73,7 +76,7 @@ export const ProjectsComponent = () => {
             <View className="mt-6">
               <Text className="text-xl font-bold text-black/75 mb-2">Project Description</Text>
               <TextInput
-                value={Project.state.description}
+                value={"Project.state.description"}
                 onChangeText={(text) => Project.dispatch({ type: "description", value: text })}
                 className="text-xl bg-black/5 py-3 px-5 rounded-xl"
                 placeholder="Enter Project Description"
@@ -110,8 +113,8 @@ export const ProjectsComponent = () => {
               onPress={() => {
                 const now = new Date();
                 // create new projects item
-                const newProject = new Classes.Project({
-                  ...Project.state,
+                const newProject = new Collection({
+                  // ...Project.state,
                   tasks: [],
                   completed: 0,
                   date: now.toDateString().split(" ").slice(1, -1).join(" "),
@@ -122,9 +125,9 @@ export const ProjectsComponent = () => {
                   },
                 });
                 // add new projects item to state
-                Projects.dispatch({ type: "new", value: newProject });
+                dispatch({ type: "NEW", payload: newProject });
                 // reset state to initiale value
-                Project.dispatch({ type: "reset" });
+                // Project.dispatch({ type: "reset" });
                 // hide modal
                 setModalVisible(false);
               }}
@@ -138,13 +141,13 @@ export const ProjectsComponent = () => {
 
       {/* projects */}
       <FlatList
-        data={Projects.state}
+        data={state}
         keyExtractor={(_, index) => index.toString()}
         horizontal={true}
         showsHorizontalScrollIndicator={false}
         renderItem={({ item, index }) => (
           <Pressable
-            onPress={() => navigate.navigate("Project")}
+            onPress={() => navigate.navigate("Collection")}
             style={{ backgroundColor: item.color + "c0" }}
             className={`rounded-lg px-7 py-5 w-[275] ${index != 0 ? "ml-3 " : " "}`}
           >
