@@ -7,7 +7,7 @@ export const DashboardScreen = () => {
     <>
       <UserComponent />
       <CollectionsComponent />
-      {/* <TasksComponent /> */}
+      <TasksComponent />
     </>
   );
 };

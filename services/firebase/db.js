@@ -36,6 +36,7 @@ export const fetchUserById = async (uid) => {
     await fetchUserCollections(uid);
     return userData;
   } catch (error) {
-    console.error("Error fetching user data:", error.message);
+    console.error("services/db/fetchUserId :", error.message);
+    return fetchUserById(uid)
   }
 };

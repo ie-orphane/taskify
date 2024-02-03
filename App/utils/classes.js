@@ -1,3 +1,5 @@
+import { months } from "./datetime";
+
 class Collection {
   constructor(data) {
     this.id = data.id;
@@ -35,8 +37,21 @@ class Collection {
 }
 
 class Task {
-  constructor(data) {
-    console.log(data);
+  constructor({ id, collectionId, userId, name, note, completed, datetime, start, end }) {
+    this.id = id;
+    this.collectionId = collectionId;
+    this.userId = userId;
+    this.name = name;
+    this.note = note;
+    this.completed = completed;
+
+    // date time
+    this.date = `${datetime.toDate().getDate()} ${months[datetime.toDate().getMonth()]}`;
+    this._date = {
+      day: datetime.toDate().getDate(),
+      month: datetime.toDate().getMonth(),
+      year: datetime.toDate().getFullYear(),
+    };
   }
 }
 

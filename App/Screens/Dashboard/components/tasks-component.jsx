@@ -4,6 +4,7 @@ import { Entypo } from "@expo/vector-icons";
 import { COLORS } from "../../../../constants";
 import { useAppContext } from "../../../Context";
 import { useCollections, useTasks } from "../../../hooks";
+import { today } from "../../../utils/datetime";
 
 export const TasksComponent = () => {
   const now = new Date();
@@ -12,8 +13,8 @@ export const TasksComponent = () => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
   const [filterSelected, setFilterSelected] = useState("All");
 
-  const [tasksState, tasksDispatch] = useTasks()
-  const [collectionsState, collectionsDispatch] = useCollections()
+  const [tasksState, tasksDispatch] = useTasks();
+  const [collectionsState, collectionsDispatch] = useCollections();
 
   const filters = {
     All: tasksState,
@@ -29,9 +30,7 @@ export const TasksComponent = () => {
         {/* heading & description */}
         <View>
           <Text className="text-3xl font-bold">Tasks</Text>
-          <Text className="text-black/25 text-lg font-medium">
-            {`${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]}`}
-          </Text>
+          <Text className="text-black/25 text-lg font-medium">{today(now)}</Text>
         </View>
 
         {/* add button */}
@@ -60,7 +59,7 @@ export const TasksComponent = () => {
               <Text className="text-xl font-bold text-black/75 mb-2">Task Name</Text>
               <TextInput
                 value={"Task.state.name"}
-                onChangeText={(text) => Task.dispatch({ type: "name", value: text })}
+                // onChangeText={(text) => Task.dispatch({ type: "name", value: text })}
                 className="text-xl bg-black/5 py-3 px-5 rounded-xl"
                 placeholder="Enter Task Name"
               />
@@ -71,7 +70,7 @@ export const TasksComponent = () => {
               <Text className="text-xl font-bold text-black/75 mb-2">Task Note</Text>
               <TextInput
                 value={"Task.state.description"}
-                onChangeText={(text) => Task.dispatch({ type: "note", value: text })}
+                // onChangeText={(text) => Task.dispatch({ type: "note", value: text })}
                 className="text-xl bg-black/5 py-3 px-5 rounded-xl"
                 placeholder="Enter Task Note"
               />
@@ -84,7 +83,7 @@ export const TasksComponent = () => {
                 onPress={() => setDropdownVisible(!dropdownVisible)}
                 className="bg-black/5 py-3 px-5 rounded-xl flex-row justify-between"
               >
-                {Task.state.collection == "" ? (
+                {'Task.state.collection' == "" ? (
                   <Text className="text-xl text-black/[37.5%]">Choose a collection</Text>
                 ) : (
                   <Text className="text-xl">{"Task.state.collection"}</Text>
@@ -104,7 +103,7 @@ export const TasksComponent = () => {
                       <Pressable
                         key={index}
                         onPress={() => {
-                          Task.dispatch({ type: "collection", value: item.name });
+                          // Task.dispatch({ type: "collection", value: item.name });
                           setDropdownVisible(!dropdownVisible);
                         }}
                       >
@@ -140,9 +139,9 @@ export const TasksComponent = () => {
                   },
                 };
                 // add new projects item to state
-                Tasks.dispatch({ type: "new", value: newTask });
+                tasksDispatch({ type: "new", value: newTask });
                 // reset the state the iniale value
-                Task.dispatch({ type: "reset" });
+                // Task.dispatch({ type: "reset" });
                 // hide the modal
                 setModalVisible(false);
               }}
@@ -201,7 +200,7 @@ export const TasksComponent = () => {
                 </View>
                 {/* completed mark */}
                 <Pressable
-                  onPress={() => Tasks.dispatch({ type: "completed", value: item.id })}
+                  onPress={() => tasksDispatch({ type: "COMPLETED", value: item.id })}
                   style={
                     item.completed
                       ? { backgroundColor: COLORS.primary }

@@ -14,3 +14,9 @@ const months = [
 ];
 
 const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+const today = (now) => {
+  return `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]}`
+}
+
+export { months, days, today }
