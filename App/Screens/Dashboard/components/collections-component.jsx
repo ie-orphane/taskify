@@ -2,16 +2,15 @@ import { FlatList, Modal, Pressable, Text, TextInput, View } from "react-native"
 import { EvilIcons } from "@expo/vector-icons";
 import { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-import { useAppContext } from "../../../Context";
-import { useCollections } from "../../../hooks";
-import { Collection } from "../../../utils/classes";
+import { useAppContext } from "../../../../context";
+import { addCollection } from "../../../../services/firebase";
 
 export const CollectionsComponent = () => {
+  const navigate = useNavigation();
+  const { user, state, dispatch, Collections, fetchCollections } = useAppContext();
+
   const [modalVisible, setModalVisible] = useState(false);
   const [radioSelected, setRadioSelected] = useState(0);
-  const { user, Project } = useAppContext();
-  const [state, dispatch] = useCollections();
-  console.log(state);
 
   const radioOptions = [
     "#f59e0b",
@@ -24,26 +23,47 @@ export const CollectionsComponent = () => {
     "#f43f5e",
   ];
 
-  const navigate = useNavigation();
+  const handleAddCollection = async () => {
+    // if (taskInput.trim() !== '') {
+    try {
+      const newCollection = {
+        ...state.collection, // name description color
+        userId: user.uid,
+        tasks: [],
+        completed: 0,
+      };
+      // add new collection to db
+      await addCollection(newCollection);
+      // update all collections
+      await fetchCollections();
+      // reset state to initiale value
+      dispatch({ target: "Collection", type: "RESET" });
+      // hide modal
+      setModalVisible(false);
+      // }
+    } catch (error) {
+      console.error(".../dashboard/.../tasks-components/handleAddTask", error.message);
+    }
+  };
 
   return (
-    <View className="px-8 py-4 bg-white/75">
+    <View className="py-4 bg-white">
       {/* Header & add button */}
-      <View className="flex-row items-center justify-between pb-6">
+      <View className="px-8 flex-row items-center justify-between pb-3">
         {/* heading & description */}
         <View>
-          <Text className="text-3xl font-bold">Collections</Text>
-          <Text className="text-black/30 text-lg font-medium">
+          <Text className="text-4xl font-bold text-dark w-3/5">Let’s make a habits together 🙌</Text>
+          {/* <Text className="text-black/30 text-lg font-medium">
             You have
-            <Text className="text-main font-medium"> {state.length} </Text>
+            <Text className="text-main font-medium"> {Collections.length} </Text>
             Collections
-          </Text>
+          </Text> */}
         </View>
 
         {/* add button */}
-        <Pressable onPress={() => setModalVisible(true)} className="bg-main/5 px-6 py-2 rounded-lg">
+        {/* <Pressable onPress={() => setModalVisible(true)} className="bg-primary/5 px-6 py-2 rounded-lg">
           <Text className="text-main/75 text-xl font-medium">+ Add</Text>
-        </Pressable>
+        </Pressable> */}
       </View>
 
       {/* add new collection modal */}
@@ -63,23 +83,27 @@ export const CollectionsComponent = () => {
             <Text className="text-3xl font-bold mb-6">Create New Collection</Text>
             {/* project name */}
             <View>
-              <Text className="text-xl font-bold text-black/75 mb-2">Project Name</Text>
+              <Text className="text-xl font-bold text-black/75 mb-2">Collection Name</Text>
               <TextInput
-                value={"Project.state.name"}
-                onChangeText={(text) => Project.dispatch({ type: "name", value: text })}
+                value={state.collection.name}
+                onChangeText={(text) =>
+                  dispatch({ target: "Collection", type: "NAME", payload: text })
+                }
                 className="text-xl bg-black/5 py-3 px-5 rounded-xl"
-                placeholder="Enter Project Name"
+                placeholder="Enter Collection Name"
               />
             </View>
 
             {/* project description */}
             <View className="mt-6">
-              <Text className="text-xl font-bold text-black/75 mb-2">Project Description</Text>
+              <Text className="text-xl font-bold text-black/75 mb-2">Collection Description</Text>
               <TextInput
-                value={"Project.state.description"}
-                onChangeText={(text) => Project.dispatch({ type: "description", value: text })}
+                value={state.collection.description}
+                onChangeText={(text) =>
+                  dispatch({ target: "Collection", type: "DESCRIPTION", payload: text })
+                }
                 className="text-xl bg-black/5 py-3 px-5 rounded-xl"
-                placeholder="Enter Project Description"
+                placeholder="Enter Collection Description"
               />
             </View>
 
@@ -92,7 +116,7 @@ export const CollectionsComponent = () => {
                     key={index}
                     onPress={() => {
                       setRadioSelected(index);
-                      Project.dispatch({ type: "color", value: option });
+                      dispatch({ target: "Collection", type: "COLOR", payload: option });
                     }}
                   >
                     <View
@@ -109,31 +133,8 @@ export const CollectionsComponent = () => {
             </View>
 
             {/* add button */}
-            <Pressable
-              onPress={() => {
-                const now = new Date();
-                // create new projects item
-                const newProject = new Collection({
-                  // ...Project.state,
-                  tasks: [],
-                  completed: 0,
-                  date: now.toDateString().split(" ").slice(1, -1).join(" "),
-                  _date: {
-                    day: now.getDate(),
-                    month: now.getMonth(),
-                    year: now.getFullYear(),
-                  },
-                });
-                // add new projects item to state
-                dispatch({ type: "NEW", payload: newProject });
-                // reset state to initiale value
-                // Project.dispatch({ type: "reset" });
-                // hide modal
-                setModalVisible(false);
-              }}
-              className="bg-main/5 py-4 rounded-3xl mt-8"
-            >
-              <Text className="text-main/75 text-xl font-medium self-center">Add Project</Text>
+            <Pressable onPress={handleAddCollection} className="bg-main/5 py-4 rounded-3xl mt-8">
+              <Text className="text-main/75 text-xl font-medium self-center">Add Collection</Text>
             </Pressable>
           </Pressable>
         </Pressable>
@@ -141,15 +142,17 @@ export const CollectionsComponent = () => {
 
       {/* projects */}
       <FlatList
-        data={state}
-        keyExtractor={(_, index) => index.toString()}
+        data={Collections}
         horizontal={true}
         showsHorizontalScrollIndicator={false}
+        keyExtractor={(_, index) => index.toString()}
         renderItem={({ item, index }) => (
           <Pressable
             onPress={() => navigate.navigate("Collection")}
             style={{ backgroundColor: item.color + "c0" }}
-            className={`rounded-lg px-7 py-5 w-[275] ${index != 0 ? "ml-3 " : " "}`}
+            className={`rounded-lg px-7 py-5 w-[275] ${
+              index == 0 ? "ml-8 mr-3" : index == Collections.length - 1 ? "ml-3 mr-8" : "mx-3"
+            }`}
           >
             {/* title */}
             <Text className="text-white text-2xl font-semibold capitalize">{item.name}</Text>

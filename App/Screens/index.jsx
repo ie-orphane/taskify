@@ -6,6 +6,10 @@ import { CollectionScreen } from "./collection/collection-screen";
 import { ProfileScreen } from "./Profile/profile-screen";
 import { BoardScreen } from "./Board/board-screen";
 
+const CreateScreen = () => {
+  return <></>;
+};
+
 export {
   BoardScreen,
   ProfileScreen,
@@ -14,4 +18,5 @@ export {
   HomeScreen,
   DashboardScreen,
   CollectionScreen,
+  CreateScreen,
 };

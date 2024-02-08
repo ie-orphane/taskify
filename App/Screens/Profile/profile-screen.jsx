@@ -1,9 +1,10 @@
-import { Text, View } from "react-native"
+import { Text, View } from "react-native";
 
 export const ProfileScreen = () => {
-    return (
-        <View>
-            <Text>Profile</Text>
-        </View>
-    )
-}
+
+  return (
+    <View className="h-full items-center justify-center">
+      <Text>Profile</Text>
+    </View>
+  );
+};

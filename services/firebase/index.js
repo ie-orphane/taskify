@@ -1,4 +1,12 @@
-import { signIn, signUp } from "./auth";
-import { fetchUserById, fetchUserCollections, fetchUserTasks } from "./db";
+import { signIn, signUp, onUserStateChanged } from "./auth";
+import { addCollection, addTask, fetchUserCollections, fetchUserTasks } from "./db";
 
-export { signIn, signUp, fetchUserById, fetchUserCollections, fetchUserTasks };
+export {
+  signIn,
+  signUp,
+  onUserStateChanged,
+  fetchUserTasks,
+  fetchUserCollections,
+  addTask,
+  addCollection,
+};

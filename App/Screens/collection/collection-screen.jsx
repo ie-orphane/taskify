@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useAppContext } from "../../Context";
+import { useAppContext } from "../../../context";
 import { Text } from "react-native";
 
 export const CollectionScreen = ({ route }) => {

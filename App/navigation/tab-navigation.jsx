@@ -1,25 +1,69 @@
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { Entypo, FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
+import { COLORS } from "../../constants";
+import { useAppContext } from "../../context";
+import { HomeNavigation } from "./home-navigation";
+import { ProfileScreen, BoardScreen, CreateScreen } from "../Screens";
 import { useState } from "react";
-import { Modal, Pressable, ScrollView, Text, TextInput, View } from "react-native";
-import { Entypo } from "@expo/vector-icons";
-import { COLORS } from "../../../../constants";
-import { useAppContext } from "../../../../context";
-import { today } from "../../../../utils/datetime";
-import { addTask } from "../../../../services/firebase";
+import { Modal, Pressable, Text, View, TextInput } from "react-native";
 
-export const TasksComponent = () => {
-  const now = new Date();
-  const { user, state, dispatch, Tasks, fetchTasks, Collections } = useAppContext();
+const Tab = createBottomTabNavigator();
+
+export const TabNavigation = () => {
+  const { homeRoute } = useAppContext();
 
   const [modalVisible, setModalVisible] = useState(false);
   const [dropdownVisible, setDropdownVisible] = useState(false);
-  const [filterSelected, setFilterSelected] = useState("All");
 
-  const filters = {
-    All: Tasks,
-    Today: Tasks.filter((task) => task._date.day == now.getDate()),
-    Pending: Tasks.filter((task) => !task.completed),
-    Completed: Tasks.filter((task) => task.completed),
+  const [tabs, setTabs] = useState([
+    {
+      name: "Home",
+      component: HomeNavigation,
+      barIcon: ({ focused }) => (
+        <Entypo name="home" size={28} color={focused ? COLORS.primary : COLORS.gray} />
+      ),
+    },
+    {
+      name: "Board",
+      title: "",
+      component: BoardScreen,
+      barIcon: ({ focused }) => (
+        <MaterialCommunityIcons
+          name="clipboard-list"
+          size={28}
+          color={focused ? COLORS.primary : COLORS.gray}
+        />
+      ),
+    },
+    {
+      name: "Profile",
+      title: "",
+      component: ProfileScreen,
+      barIcon: ({ focused }) => (
+        <FontAwesome name="user" size={24} color={focused ? COLORS.primary : COLORS.gray} />
+      ),
+    },
+    {
+      name: "Create",
+      component: CreateScreen,
+      title: "",
+      barIcon: ({ focused }) => (
+        <View className="bg-primary/100 w-11 h-11 items-center justify-center rounded-full">
+          <Entypo name="plus" size={28} color="white" />
+        </View>
+      ),
+    },
+  ]);
+
+  const handleActiveBar = (activeName) => {
+    const newTabs = tabs.map((tab) => {
+      tab.name == activeName ? (tab.title = activeName) : (tab.title = "");
+      return tab;
+    });
+    setTabs(newTabs);
   };
+
+  const { user, state, dispatch, fetchTasks, Collections } = useAppContext();
 
   const handleAddTask = async () => {
     // if (taskInput.trim() !== '') {
@@ -47,23 +91,49 @@ export const TasksComponent = () => {
 
   return (
     <>
-      {/* Header & add button */}
-      <View className="flex-row px-8 pt-6 items-center justify-between">
-        {/* heading & description */}
-          <Text className="text-2xl font-bold text-dark">Recent Tasks</Text>
+      <Tab.Navigator
+        initialRouteName="Home"
+        screenOptions={{
+          headerShown: false,
+          tabBarLabelStyle: {
+            fontSize: 12,
+            fontWeight: "bold",
+            marginTop: 14,
+            backgroundColor: "black",
+            width: "100%",
+            height: "50%",
+          },
+          tabBarItemStyle: {
+            backgroundColor: "yellow",
+            alignItems: "center",
+            alignContent: "center",
+            justifyContent: "center",
+          },
+          tabBarStyle:
+            homeRoute != "Dashboard"
+              ? { display: "none" }
+              : { backgroundColor: "red", height: 150 },
+        }}
+      >
+        {tabs.map((tab, index) => (
+          <Tab.Screen
+            key={index}
+            name={tab.name}
+            component={tab.component}
+            options={{
+              tabBarIcon: tab.barIcon,
+              title: tab.title,
+            }}
+            listeners={{
+              tabPress: (e) => {
+                if (tab.name === "Create") e.preventDefault(), setModalVisible(true);
+                else handleActiveBar(e.target.split("-")[0]);
+              },
+            }}
+          />
+        ))}
+      </Tab.Navigator>
 
-        {/* add button */}
-        {/* {Collections.length != 0 && (
-          <Pressable
-            onPress={() => setModalVisible(true)}
-            className="bg-main/5 px-6 py-2 rounded-lg"
-          >
-            <Text className="text-main/75 text-xl font-medium">+ New Task</Text>
-          </Pressable>
-        )} */}
-      </View>
-
-      {/* add new project modal */}
       <Modal animationType="fade" transparent={true} visible={modalVisible}>
         <Pressable
           onPress={() => setModalVisible(false)}
@@ -153,78 +223,6 @@ export const TasksComponent = () => {
           </Pressable>
         </Pressable>
       </Modal>
-
-      {/* projects */}
-      <ScrollView className="my-2 px-8" showsVerticalScrollIndicator={false}>
-        {/* tasks filter */}
-        {/* <View className="flex-row justify-between">
-          {Object.entries(filters).map(([title, correspondTasks], index) => (
-            <Pressable
-              key={index}
-              onPress={() => setFilterSelected(title)}
-              className="flex-row items-center"
-            >
-              <Text
-                style={{ color: filterSelected == title ? "#0057fbdf" : "#0000003f" }}
-                className="mr-1 text-lg font-medium"
-              >
-                {title}
-              </Text>
-              <View
-                style={{ backgroundColor: filterSelected == title ? "#0057fb" : "#0000001f" }}
-                className="bg-main rounded-full w-[16] h-[16] items-center justify-center"
-              >
-                <Text className="text-white text-xs">{correspondTasks.length}</Text>
-              </View>
-              {title == "All" && (
-                <View className="bg-black/[12.5%] w-[2] h-[20] absolute -right-1/2 rounded" />
-              )}
-            </Pressable>
-          ))}
-        </View> */}
-
-        {/* tasks */}
-        {/* <View className="border border-green-500"> */}
-          {filters[filterSelected].map((item, index) => (
-            <View key={index} className={`bg-white p-4 rounded-lg ${index != 0 ? "mt-3 " : " "}`}>
-              <View className="flex-row justify-between border-b border-black/5 pb-3">
-                {/* title and project */}
-                <View>
-                  <Text className={`text-xl font-medium ${item.completed ? "line-through" : ""}`}>
-                    {item.name}
-                  </Text>
-                  <Text className="font-medium text-black/50">{item.collection}</Text>
-                </View>
-                {/* completed mark */}
-                <Pressable
-                  onPress={() => updateTask()}
-                  style={
-                    item.completed
-                      ? { backgroundColor: COLORS.primary }
-                      : { borderWidth: 2, borderColor: "#0001" }
-                  }
-                  className="self-center rounded-full p-[5]"
-                >
-                  <Entypo name="check" size={14} color="#fff" />
-                </Pressable>
-              </View>
-              {/* datetime */}
-              <View className="mt-4 flex-row">
-                {item._date.day == now.getDate() ? (
-                  <>
-                    <Text className="font-medium text-black/50">Today</Text>
-                    <Text className="ml-2 text-black/25">
-                      {item.start} - {item.end}
-                    </Text>
-                  </>
-                ) : (
-                  <Text className="font-medium text-black/50">{item.date}</Text>
-                )}
-              </View>
-            </View>
-          ))}
-        {/* </View> */}
-      </ScrollView>
     </>
   );
 };

@@ -1,46 +1,46 @@
 import { useNavigation } from "@react-navigation/native";
-import { Pressable, Text, TextInput, View } from "react-native";
-import { signIn, fetchUserById } from "../../../services/firebase";
+import { Pressable, Text, View } from "react-native";
+import { signIn } from "../../../services/firebase";
 import { useState } from "react";
-import { useAppContext } from "../../Context";
+import { FormInput } from "../../layouts";
 
 export const SignInScreen = () => {
   const navigation = useNavigation();
 
-  const [email, setEmail] = useState("user@test.com");
-  const [password, setPassword] = useState("test@@");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
 
-  const { setUser } = useAppContext();
-
   return (
-    <View className="h-screen w-screen bg-white pt-12 px-8">
-      <Text className="text-3xl font-medium">Welcome back</Text>
+    <View className="h-full bg-white pt-20 px-8">
+      <Text className="text-3xl font-bold tracking-widest">Welcome back chef!</Text>
+      <Text className="text-xl font-medium text-black/75 mb-4 tracking-tighter">
+        Great to see you again
+      </Text>
 
-      <TextInput
-        value={email}
-        onChangeText={(text) => setEmail(text)}
-        className="text-xl bg-black/5 p-4 rounded-lg mt-3"
-        placeholder="Email Address"
-      />
-      <TextInput
-        value={password}
-        onChangeText={(text) => setPassword(text)}
-        className="text-xl bg-black/5 p-4 rounded-lg mt-3"
-        placeholder="Password"
-      />
+      {[
+        [email, setEmail, "Email Address"],
+        [password, setPassword, "Password"],
+      ].map(([state, setState, text], index) => (
+        <FormInput
+          key={index}
+          value={state}
+          onChangeText={setState}
+          placeholder={text}
+          onError={error}
+          setError={setError}
+        />
+      ))}
+
+      <Pressable onPress={() => {}}>
+        <Text className="self-end mt-10 text-black/75 text-lg font-medium">Forgot password?</Text>
+      </Pressable>
 
       <Pressable
         onPress={async () => {
-          const uid = await signIn(email, password);
-          if (uid) {
-            setUser(await fetchUserById(uid));
-            navigation.navigate("App");
-          } else {
-            setError(true);
-          }
+          await signIn(email, password);
         }}
-        className="mt-12 bg-main/[87.5%] active:bg-main/100 w-full rounded-lg py-5"
+        className="mt-4 bg-main/[87.5%] active:bg-main/100 w-full rounded-lg py-5"
       >
         <Text className="text-center text-white text-2xl font-medium">Login</Text>
       </Pressable>
@@ -52,23 +52,22 @@ export const SignInScreen = () => {
         Invalid email or password!
       </Text>
 
-      <Pressable onPress={() => {}}>
-        <Text className="text-center mt-10 text-black/[37.5%] text-2xl font-medium">
-          Forgot password?
-        </Text>
-      </Pressable>
+      <View className="h-[1] bg-black/10 my-14"></View>
 
-      <View className="h-[1] bg-black/25 my-10"></View>
-
-      <Pressable
-        onPress={() => {
-          navigation.navigate("signIn");
-        }}
-      >
-        <Text className="text-center text-black/[37.5%] text-2xl font-medium">
-          Already have an account?
+      <View className="flex-row items-center justify-center">
+        <Text className="text-center text-black/75 text-xl font-medium">
+          Don't have an account?
         </Text>
-      </Pressable>
+
+        <Pressable
+          className="ml-2"
+          onPress={() => {
+            navigation.navigate("SignUp");
+          }}
+        >
+          <Text className="text-xl text-main/75 font-medium">Log in</Text>
+        </Pressable>
+      </View>
     </View>
   );
 };
