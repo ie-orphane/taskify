@@ -7,6 +7,7 @@ import EditeSquare from "./edite-square.jsx";
 import PlusSquare from "./plus-square.jsx";
 import Team from "./team.jsx";
 import Check from "./check.jsx";
+import Logo from "./logo.jsx";
 
 export default {
   Home,
@@ -18,4 +19,5 @@ export default {
   PlusSquare,
   Team,
   Check,
+  Logo,
 };

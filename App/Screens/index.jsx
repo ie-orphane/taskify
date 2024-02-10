@@ -5,11 +5,4 @@ import { DashboardScreen } from "./Dashboard/dashboard-screen";
 import { CollectionScreen } from "./collection/collection-screen";
 import { ProfileScreen } from "./Profile/profile-screen";
 
-export {
-  ProfileScreen,
-  SignInScreen,
-  SignUpScreen,
-  HomeScreen,
-  DashboardScreen,
-  CollectionScreen,
-};
+export { ProfileScreen, SignInScreen, SignUpScreen, HomeScreen, DashboardScreen, CollectionScreen };

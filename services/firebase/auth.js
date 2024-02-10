@@ -52,15 +52,17 @@ export const signIn = async (email, password) => {
   }
 };
 
-export const onUserStateChanged = (callback) => {
+export const onUserStateChanged = (callback, loadingCallback) => {
   return onAuthStateChanged(auth, async (user) => {
     if (user) {
       const token = await user.getIdToken();
       await storeUserToken(token);
       const userData = await fetchUserById(user.uid);
       callback({ ...user, ...userData });
+      // loadingCallback(false)
     } else {
       callback(user);
+      loadingCallback(false)
     }
   });
 };

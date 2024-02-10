@@ -4,7 +4,7 @@ import { Collection, Task } from "../utils/classes";
 
 const appContext = createContext();
 
-const AppProvider = ({ children, user, setUser }) => {
+const AppProvider = ({ children, user, setUser, setLoading }) => {
   const [homeRoute, setHomeRoute] = useState("Dashboard");
 
   // create modal context
@@ -37,10 +37,15 @@ const AppProvider = ({ children, user, setUser }) => {
     }
   };
 
+  const fetchDate = async () => {
+    await fetchCollections();
+    await fetchTasks();
+    setLoading(false);
+  };
+
   useEffect(() => {
     if (user) {
-      fetchCollections();
-      fetchTasks();
+      fetchDate();
     }
   }, [user]);
 
