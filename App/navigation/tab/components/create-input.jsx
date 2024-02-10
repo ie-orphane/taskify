@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
+import { COLORS } from "../../../../constants";
 import { TextInput } from "react-native";
-import { COLORS } from "../../constants";
 
-export const FormInput = (props) => {
+export const CreateInput = (props) => {
   const blurBorderColor = COLORS.primary + "1f";
   const [borderColor, setBorderColor] = useState(blurBorderColor);
 
@@ -15,14 +15,14 @@ export const FormInput = (props) => {
       {...props}
       onFocus={() => {
         setBorderColor(COLORS.primary);
-        props?.setError(false);
+        props.handleErrorChange(props.title, false);
       }}
       onBlur={() => {
         setBorderColor(blurBorderColor);
-        props?.setError(false);
+        props.handleErrorChange(props.title, false);
       }}
       style={{ borderColor: borderColor }}
-      className="text-xl border p-4 rounded-lg mt-3"
+      className="text-xl border p-4 rounded-lg text-dark font-medium"
       placeholderTextColor={"#0003"}
     />
   );

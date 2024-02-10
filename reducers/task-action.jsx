@@ -1,4 +1,4 @@
-const initializer = { name: "", note: "", collectionId: "" };
+const initializer = { name: "", note: "", collectionId: "", date: null };
 
 const reducer = (state, { type, payload }) => {
   switch (type) {
@@ -8,8 +8,10 @@ const reducer = (state, { type, payload }) => {
       return { ...state, note: payload };
     case "COLLECTION":
       return { ...state, collectionId: payload };
+    case "DATE":
+      return { ...state, date: payload };
     case "RESET":
-      return { name: "", note: "", collectionId: "" };
+      return { name: "", note: "", collectionId: "", date: null };
     default:
       return state;
   }

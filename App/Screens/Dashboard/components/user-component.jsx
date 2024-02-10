@@ -1,32 +1,21 @@
-import { Text, View } from "react-native";
+import { Image, Text, View } from "react-native";
 import { useAppContext } from "../../../../context";
-import { useEffect, useState } from "react";
 import Icons from "../../../../assets/icons";
+import Photo from "../../../../assets/images/IMG_20240208_133954.jpg";
 
 export const UserComponent = () => {
-  const now = new Date();
-
-  const { user, Tasks } = useAppContext();
-  const [todayTasks, setTodayTasks] = useState(0);
-
-  useEffect(() => {
-    setTodayTasks(Tasks.filter((task) => task._date.day == now.getDate()).length);
-  }, [Tasks]);
+  const { user } = useAppContext();
 
   return (
     <View className="flex-row items-center px-8 pb-3 pt-16 bg-white">
-      <View className="w-11 h-11 rounded-full [border-width:1.75px] border-black/[12.5%]"></View>
+      <Image className="w-11 h-11 rounded-full" source={Photo} />
 
-      <View>
-        <Text className="text-xl text-black/50 font-medium ml-3">Welcome {user.displayName}!</Text>
-        {todayTasks != 0 && (
-          <Text className="text-xl text-black/50 font-medium">{`${todayTasks} task${
-            todayTasks > 1 ? "s" : ""
-          } for today!`}</Text>
-        )}
+      <View className="ml-3">
+        <Text className="text-black/50 font-medium text-lg tracking-tighter">Good Morning!</Text>
+        <Text className="text-xl text-dark font-bold">{user.displayName}</Text>
       </View>
 
-      <View className="w-11 h-11 rounded-full  [border-width:1.75px] border-black/5 ml-auto items-center justify-center">
+      <View className="w-11 h-11 rounded-full [border-width:1.5px] border-black/[2.5%] ml-auto items-center justify-center">
         <Icons.Bell />
       </View>
     </View>

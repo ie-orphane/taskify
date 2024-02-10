@@ -37,7 +37,7 @@ class Collection {
 }
 
 class Task {
-  constructor({ id, collectionId, userId, name, note, completed, datetime, start, end }) {
+  constructor({ id, collectionId, userId, name, note, completed, date, start, end }) {
     this.id = id;
     this.collectionId = collectionId;
     this.userId = userId;
@@ -45,13 +45,22 @@ class Task {
     this.note = note;
     this.completed = completed;
 
-    // date time
-    this.date = `${datetime.toDate().getDate()} ${months[datetime.toDate().getMonth()]}`;
-    this._date = {
-      day: datetime.toDate().getDate(),
-      month: datetime.toDate().getMonth(),
-      year: datetime.toDate().getFullYear(),
-    };
+    this.date = `${date.toDate().getDate()} ${months[date.toDate().getMonth()]}`;
+    this._date = date.toDate();
+
+    this.start = start.toDate().toLocaleTimeString("en-US", {
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+    });
+    this._start = start.toDate();
+
+    this.end = end.toDate().toLocaleTimeString("en-US", {
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+    });
+    this._end = end.toDate();
   }
 }
 

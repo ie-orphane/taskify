@@ -1,5 +1,5 @@
 import { signIn, signUp, onUserStateChanged } from "./auth";
-import { addCollection, addTask, fetchUserCollections, fetchUserTasks } from "./db";
+import { addCollection, addTask, fetchUserCollections, fetchUserTasks, updateTask } from "./db";
 
 export {
   signIn,
@@ -9,4 +9,5 @@ export {
   fetchUserCollections,
   addTask,
   addCollection,
+  updateTask,
 };

@@ -1,11 +1,13 @@
 import { createStackNavigator } from "@react-navigation/stack";
-import { ProfileScreen } from "../Screens";
-import { HomeNavigation } from "./home-navigation";
-import { Modal, Pressable, View } from "react-native";
-import { SHADOWS } from "../../constants";
+import { ProfileScreen } from "../../Screens";
+import { HomeNavigation } from "../home-navigation";
+import { Pressable, View } from "react-native";
+import { SHADOWS } from "../../../constants";
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
-import icons from "../../assets/icons";
+import icons from "../../../assets/icons";
+import { CreateModal } from "./components/create-modal";
+import { useAppContext } from "../../../context";
 
 const Stack = createStackNavigator();
 
@@ -24,9 +26,16 @@ export const TabNavigation = () => {
     },
   ];
 
-  const [route, setRoute] = useState("Home");
   const navigation = useNavigation();
-  const [modalVisible, setModalVisible] = useState(false);
+  const [route, setRoute] = useState("Home");
+
+  const { setModalVisible } = useAppContext();
+  const [currentMode, setCurrentMode] = useState("Task");
+
+  const toggleHandler = () => {
+    setModalVisible((prev) => !prev);
+    setCurrentMode(null);
+  };
 
   return (
     <>
@@ -47,7 +56,9 @@ export const TabNavigation = () => {
         )}
       </Stack.Navigator>
 
-      <View className="flex-row justify-around items-center pt-1 pb-3 bg-lightGray">
+      <CreateModal {...{ toggleHandler, currentMode, setCurrentMode }} />
+
+      <View className="flex-row items-center pt-1 pb-3 bg-lightGray">
         {tabs.map((tab, index) =>
           tab.title === "Create" ? (
             <View
@@ -57,7 +68,7 @@ export const TabNavigation = () => {
             >
               <Pressable
                 style={SHADOWS.medium}
-                onPress={() => {}}
+                onPress={toggleHandler}
                 className="bg-primary/100 w-11 h-11 mb-3 items-center justify-center rounded-full"
               >
                 <icons.Plus />
@@ -78,7 +89,7 @@ export const TabNavigation = () => {
               )} */}
               {route == tab.title && (
                 <View
-                  style={{ transform: [{ translateY: 6 }] }}
+                  style={{ transform: [{ translateY: 7 }] }}
                   className="absolute -bottom-1/4 w-[12] h-[12] bg-primary rounded-full"
                 ></View>
               )}
@@ -86,8 +97,6 @@ export const TabNavigation = () => {
           )
         )}
       </View>
-
-      <Modal animationType="fade" transparent={true} visible={modalVisible}></Modal>
     </>
   );
 };

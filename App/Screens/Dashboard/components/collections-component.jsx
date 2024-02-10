@@ -7,7 +7,7 @@ import { addCollection } from "../../../../services/firebase";
 
 export const CollectionsComponent = () => {
   const navigate = useNavigation();
-  const { user, state, dispatch, Collections, fetchCollections } = useAppContext();
+  const { user, Collections, fetchCollections } = useAppContext();
 
   const [modalVisible, setModalVisible] = useState(false);
   const [radioSelected, setRadioSelected] = useState(0);
@@ -23,28 +23,28 @@ export const CollectionsComponent = () => {
     "#f43f5e",
   ];
 
-  const handleAddCollection = async () => {
-    // if (taskInput.trim() !== '') {
-    try {
-      const newCollection = {
-        ...state.collection, // name description color
-        userId: user.uid,
-        tasks: [],
-        completed: 0,
-      };
-      // add new collection to db
-      await addCollection(newCollection);
-      // update all collections
-      await fetchCollections();
-      // reset state to initiale value
-      dispatch({ target: "Collection", type: "RESET" });
-      // hide modal
-      setModalVisible(false);
-      // }
-    } catch (error) {
-      console.error(".../dashboard/.../tasks-components/handleAddTask", error.message);
-    }
-  };
+  // const handleAddCollection = async () => {
+  //   // if (taskInput.trim() !== '') {
+  //   try {
+  //     const newCollection = {
+  //       ...state.collection, // name description color
+  //       userId: user.uid,
+  //       tasks: [],
+  //       completed: 0,
+  //     };
+  //     // add new collection to db
+  //     await addCollection(newCollection);
+  //     // update all collections
+  //     await fetchCollections();
+  //     // reset state to initiale value
+  //     dispatch({ target: "Collection", type: "RESET" });
+  //     // hide modal
+  //     setModalVisible(false);
+  //     // }
+  //   } catch (error) {
+  //     console.error(".../dashboard/.../tasks-components/handleAddTask", error.message);
+  //   }
+  // };
 
   return (
     <View className="py-4 bg-white">
@@ -67,21 +67,21 @@ export const CollectionsComponent = () => {
       </View>
 
       {/* add new collection modal */}
-      <Modal animationType="fade" transparent={true} visible={modalVisible}>
+      {/* <Modal animationType="fade" transparent={true} visible={modalVisible}>
         <Pressable
           onPress={() => setModalVisible(false)}
           className="content-center h-screen bg-black/[62.5%] justify-end"
         >
-          {/* modal body */}
+          
           <Pressable
             className="bg-white self-end py-10 px-8 rounded-t-[50]"
             onPress={(e) => {
               e.stopPropagation();
             }}
           >
-            {/* title */}
+           
             <Text className="text-3xl font-bold mb-6">Create New Collection</Text>
-            {/* project name */}
+            
             <View>
               <Text className="text-xl font-bold text-black/75 mb-2">Collection Name</Text>
               <TextInput
@@ -94,7 +94,6 @@ export const CollectionsComponent = () => {
               />
             </View>
 
-            {/* project description */}
             <View className="mt-6">
               <Text className="text-xl font-bold text-black/75 mb-2">Collection Description</Text>
               <TextInput
@@ -107,7 +106,6 @@ export const CollectionsComponent = () => {
               />
             </View>
 
-            {/* project color */}
             <View className="mt-6">
               <Text className="text-xl font-bold text-black/75 mb-3">Choose a color:</Text>
               <View className="flex-wrap flex-row px-12 justify-center">
@@ -132,13 +130,12 @@ export const CollectionsComponent = () => {
               </View>
             </View>
 
-            {/* add button */}
             <Pressable onPress={handleAddCollection} className="bg-main/5 py-4 rounded-3xl mt-8">
               <Text className="text-main/75 text-xl font-medium self-center">Add Collection</Text>
             </Pressable>
           </Pressable>
         </Pressable>
-      </Modal>
+      </Modal> */}
 
       {/* projects */}
       <FlatList
