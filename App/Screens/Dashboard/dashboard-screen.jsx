@@ -1,4 +1,3 @@
-import { View } from "react-native";
 import { CollectionsComponent } from "./components/collections-component";
 import { TasksComponent } from "./components/tasks-component";
 import { UserComponent } from "./components/user-component";

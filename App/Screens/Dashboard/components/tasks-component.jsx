@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
-import { COLORS } from "../../../../constants";
+import { COLORS } from "../../../../styles";
 import { useAppContext } from "../../../../context";
 import icons from "../../../../assets/icons";
 import { updateTask } from "../../../../services/firebase";

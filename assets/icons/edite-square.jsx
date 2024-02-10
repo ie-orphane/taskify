@@ -1,5 +1,5 @@
 import Svg, { Path, G } from "react-native-svg";
-import { COLORS } from "../../constants";
+import { COLORS } from "../../styles";
 
 export default EditeSquare = () => {
   return (

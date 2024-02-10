@@ -1,5 +1,4 @@
-import { createContext, useContext, useEffect, useReducer, useState } from "react";
-import { initializer, reducer } from "../reducers";
+import { createContext, useContext, useEffect, useState } from "react";
 import { fetchUserCollections, fetchUserTasks } from "../services/firebase";
 import { Collection, Task } from "../utils/classes";
 
@@ -7,13 +6,17 @@ const appContext = createContext();
 
 const AppProvider = ({ children, user, setUser }) => {
   const [homeRoute, setHomeRoute] = useState("Dashboard");
-  // const [state, dispatch] = useReducer(reducer, initializer);
 
+  // create modal context
   const [modalVisible, setModalVisible] = useState(false);
+  const [currentMode, setCurrentMode] = useState("Task");
+  const toggleHandler = () => {
+    setModalVisible((prev) => !prev);
+    setCurrentMode(null);
+  };
 
+  // tasks context
   const [Tasks, setTasks] = useState([]);
-  const [Collections, setCollections] = useState([]);
-
   const fetchTasks = async () => {
     try {
       const userTasks = await fetchUserTasks(user.uid);
@@ -23,6 +26,8 @@ const AppProvider = ({ children, user, setUser }) => {
     }
   };
 
+  // collections context
+  const [Collections, setCollections] = useState([]);
   const fetchCollections = async () => {
     try {
       const userCollections = await fetchUserCollections(user.uid);
@@ -34,12 +39,8 @@ const AppProvider = ({ children, user, setUser }) => {
 
   useEffect(() => {
     if (user) {
-      // try {
-        fetchCollections();
-        fetchTasks();
-      // } catch (error) {
-      //   console.error("Error:", error);
-      // }
+      fetchCollections();
+      fetchTasks();
     }
   }, [user]);
 
@@ -48,14 +49,17 @@ const AppProvider = ({ children, user, setUser }) => {
     setHomeRoute,
     user,
     setUser,
-    // state,
-    // dispatch,
+    // tasks context
     Tasks,
     fetchTasks,
+    // collections context
     Collections,
     fetchCollections,
+    // create modal context
     modalVisible,
-    setModalVisible,
+    currentMode,
+    setCurrentMode,
+    toggleHandler,
   };
 
   return <appContext.Provider value={appValue}>{children}</appContext.Provider>;

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { COLORS } from "../../../../constants";
+import { COLORS } from "../../../../styles";
 import { TextInput } from "react-native";
 
 export const CreateInput = (props) => {

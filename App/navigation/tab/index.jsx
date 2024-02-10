@@ -2,7 +2,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { ProfileScreen } from "../../Screens";
 import { HomeNavigation } from "../home-navigation";
 import { Pressable, View } from "react-native";
-import { SHADOWS } from "../../../constants";
+import { SHADOWS } from "../../../styles";
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
 import icons from "../../../assets/icons";
@@ -26,16 +26,10 @@ export const TabNavigation = () => {
     },
   ];
 
+  const { toggleHandler } = useAppContext();
+
   const navigation = useNavigation();
   const [route, setRoute] = useState("Home");
-
-  const { setModalVisible } = useAppContext();
-  const [currentMode, setCurrentMode] = useState("Task");
-
-  const toggleHandler = () => {
-    setModalVisible((prev) => !prev);
-    setCurrentMode(null);
-  };
 
   return (
     <>
@@ -56,7 +50,7 @@ export const TabNavigation = () => {
         )}
       </Stack.Navigator>
 
-      <CreateModal {...{ toggleHandler, currentMode, setCurrentMode }} />
+      <CreateModal />
 
       <View className="flex-row items-center pt-1 pb-3 bg-lightGray">
         {tabs.map((tab, index) =>

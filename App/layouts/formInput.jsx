@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { TextInput } from "react-native";
-import { COLORS } from "../../constants";
+import { COLORS } from "../../styles";
 
 export const FormInput = (props) => {
   const blurBorderColor = COLORS.primary + "1f";

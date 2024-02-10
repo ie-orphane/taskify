@@ -7,10 +7,10 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import { Entypo } from "@expo/vector-icons";
 import { addTask } from "../../../../services/firebase";
 import { capitalize } from "../../../../utils/helpers";
-import { COLORS, SHADOWS } from "../../../../constants";
+import { COLORS, SHADOWS } from "../../../../styles";
 
 export const CreateTask = () => {
-  const { user, fetchTasks, Collections, setModalVisible } = useAppContext();
+  const { user, fetchTasks, Collections, toggleHandler } = useAppContext();
 
   const [showDateTime, setShowDateTime] = useState("");
   const [dropdownVisible, setDropdownVisible] = useState(false);
@@ -93,9 +93,9 @@ export const CreateTask = () => {
       // update all tasks
       await fetchTasks();
       // hide the modal
-      setModalVisible(false);
+      toggleHandler();
     } catch (error) {
-      console.error(".../modal.jsx/handleAddTask", error.message);
+      console.error(".../create-task/handleAddTask", error.message);
     }
   };
 
