@@ -1,7 +1,7 @@
 import Svg, { Path, G } from "react-native-svg";
 import { COLORS } from "../../styles";
 
-export default Profile = ({ active }) => {
+export const Profile = ({ active }) => {
   return (
     <Svg width={24} height={24} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       {active ? (

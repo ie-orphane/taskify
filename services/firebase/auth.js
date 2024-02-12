@@ -52,17 +52,16 @@ export const signIn = async (email, password) => {
   }
 };
 
-export const onUserStateChanged = (callback, loadingCallback) => {
+export const onUserStateChanged = (callback) => {
   return onAuthStateChanged(auth, async (user) => {
     if (user) {
       const token = await user.getIdToken();
       await storeUserToken(token);
       const userData = await fetchUserById(user.uid);
       callback({ ...user, ...userData });
-      // loadingCallback(false)
     } else {
+      console.log("anynomus user: ", user)
       callback(user);
-      loadingCallback(false)
     }
   });
 };

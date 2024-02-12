@@ -1,6 +1,6 @@
 import Svg, { Path } from "react-native-svg";
 
-export default Plus = () => {
+export const Plus = () => {
   return (
     <Svg
       width={24}

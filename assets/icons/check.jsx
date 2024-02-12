@@ -1,7 +1,7 @@
 import Svg, { Path } from "react-native-svg";
 import { COLORS } from "../../styles";
 
-export default Check = () => {
+export const Check = () => {
   return (
     <Svg
       width={20}

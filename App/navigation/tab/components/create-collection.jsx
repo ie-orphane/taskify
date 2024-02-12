@@ -65,7 +65,7 @@ export const CreateCollection = () => {
         ...formState, // name description color
         userId: user.uid,
         tasks: [],
-        completed: 0,
+        completedTasks: 0,
       };
       // add new collection to db
       await addCollection(newCollection);

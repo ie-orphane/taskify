@@ -6,14 +6,15 @@ import { useEffect, useState } from "react";
 import ExpoStatusBar from "expo-status-bar/build/ExpoStatusBar";
 import { TabNavigation } from "./app/navigation/tab";
 import { View } from "react-native";
-import icons from "./assets/icons";
+import { Logo } from "./assets/icons";
 
 export default function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onUserStateChanged(setUser, setLoading);
+    const unsubscribe = onUserStateChanged(setUser);
+    console.log(user)
     return () => unsubscribe();
   }, []);
 
@@ -22,7 +23,7 @@ export default function App() {
       <NavigationContainer>
         {loading ? (
           <View className="bg-primary h-full items-center justify-center">
-            <icons.Logo />
+            <Logo />
           </View>
         ) : user ? (
           <TabNavigation />

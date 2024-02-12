@@ -56,9 +56,11 @@ const AppProvider = ({ children, user, setUser, setLoading }) => {
     setUser,
     // tasks context
     Tasks,
+    setTasks,
     fetchTasks,
     // collections context
     Collections,
+    setCollections,
     fetchCollections,
     // create modal context
     modalVisible,

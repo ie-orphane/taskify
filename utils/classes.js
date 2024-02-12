@@ -1,29 +1,28 @@
 import { months } from "./datetime";
 
 class Collection {
-  constructor(data) {
-    this.id = data.id;
-    this.name = data.name;
-    this.color = data.color;
+  constructor({ id, name, description, color, tasks, completedTasks, createdAt }) {
+    this.id = id;
+    this.name = name;
+    this.color = color;
+    this.description = description;
+    this.tasks = tasks;
+    this.completedTasks = completedTasks;
 
-    // date time
-    const datetime = data.datetime.toDate();
-    this.date = datetime.toDateString().split(" ").slice(1, -1).join(" ");
-    this._date = {
-      day: datetime.getDate(),
-      month: datetime.getMonth(),
-      year: datetime.getFullYear(),
-    };
+    this.date = createdAt.toDate().toDateString().split(" ").slice(1, -1).join(" ");
+    this._date = createdAt.toDate();
 
-    // progress bar
-    const percentage = (data.completed / data.tasks.length) * 100 || 0;
-    if (percentage > 100) throw new Error("percentage is greater then 100%");
+    console.log(this.name, this);
+  }
+
+  getProgressBar() {
+    const percentage = (this.completedTasks / this.tasks.length) * 100 || 0;
 
     const full = parseInt(percentage / 20); // w-[100%] : full
     const rest = parseInt(percentage % 20); // w-[~%] : rest
     const none = 5 - Math.min(parseInt(percentage % 20), 1) - parseInt(percentage / 20); // w-0 : none
 
-    this.bar = [
+    return [
       ...Array.from({ length: full }, () => {
         return { width: "100%" };
       }),
@@ -32,15 +31,13 @@ class Collection {
         return { width: 0 };
       }),
     ];
-    this.per = parseInt(percentage);
   }
 }
 
 class Task {
-  constructor({ id, collectionId, userId, name, note, completed, date, start, end }) {
+  constructor({ id, collectionId, name, note, completed, date, start, end }) {
     this.id = id;
     this.collectionId = collectionId;
-    this.userId = userId;
     this.name = name;
     this.note = note;
     this.completed = completed;

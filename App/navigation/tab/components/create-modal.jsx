@@ -1,5 +1,5 @@
 import { Modal, Pressable, Text, View } from "react-native";
-import icons from "../../../../assets/icons";
+import { EditeSquare, PlusSquare, X } from "../../../../assets/icons";
 import { BlurView } from "expo-blur";
 import { SHADOWS } from "../../../../styles";
 import { useAppContext } from "../../../../context";
@@ -7,17 +7,17 @@ import { CreateTask } from "./create-task";
 import { CreateCollection } from "./create-collection";
 
 export const CreateModal = () => {
-  const { modalVisible, toggleHandler, currentMode, setCurrentMode } = useAppContext();
+  const { Collections, modalVisible, toggleHandler, currentMode, setCurrentMode } = useAppContext();
   const mods = [
     {
       name: "Task",
       component: <CreateTask />,
-      Icon: icons.EditeSquare,
+      Icon: EditeSquare,
     },
     {
       name: "Collection",
       component: <CreateCollection />,
-      Icon: icons.PlusSquare,
+      Icon: PlusSquare,
     },
   ];
 
@@ -36,24 +36,26 @@ export const CreateModal = () => {
 
             {!currentMode ? (
               <>
-                {mods.map(({ name, Icon, component }, index) => (
-                  <Pressable
-                    key={index}
-                    onPress={() => setCurrentMode(component)}
-                    className={`flex-row items-center w-full border border-dark/10 rounded-xl py-[14] px-6 mt-4`}
-                  >
-                    <Icon />
-                    <Text className="ml-2 text-[22px] font-medium text-dark">Create {name}</Text>
-                  </Pressable>
-                ))}
+                {mods.map(({ name, Icon, component }, index) =>
+                  name === "Task" && Collections.length == 0 ? null : (
+                    <Pressable
+                      key={index}
+                      onPress={() => setCurrentMode(component)}
+                      className={`flex-row items-center w-full border border-dark/10 rounded-xl py-[14] px-6 mt-4`}
+                    >
+                      <Icon />
+                      <Text className="ml-2 text-[22px] font-medium text-dark">Create {name}</Text>
+                    </Pressable>
+                  )
+                )}
 
-                <View
+                <Pressable
                   style={SHADOWS.medium}
                   onPress={toggleHandler}
                   className="bg-primary/100 w-11 h-11 items-center justify-center rounded-full mt-4"
                 >
-                  <icons.X />
-                </View>
+                  <X />
+                </Pressable>
               </>
             ) : (
               currentMode
