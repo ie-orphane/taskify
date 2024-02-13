@@ -102,7 +102,7 @@ export const CreateTask = () => {
   return (
     <>
       {["name", "note"].map((title, index) => (
-        <View key={index} className="w-full mb-6">
+        <View key={index} className="w-full mb-6 bg-white">
           <Text className="text-lg tracking-wider text-black/[32.5%] font-medium mb-1">
             Task {capitalize(title)}
           </Text>
@@ -118,7 +118,7 @@ export const CreateTask = () => {
         </View>
       ))}
 
-      <View className="w-full mb-6">
+      <View className="w-full mb-6 bg-white">
         <Text className="text-lg tracking-wider text-black/[32.5%] font-medium mb-1">
           Collection
         </Text>
@@ -162,7 +162,7 @@ export const CreateTask = () => {
         ) : null}
       </View>
 
-      <View className="w-full mb-6">
+      <View className="w-full mb-6 bg-white">
         <Text className="text-lg tracking-wider text-black/[32.5%] font-medium mb-1">Date</Text>
         <Text
           style={{ borderColor: COLORS.primary + "1f" }}

@@ -64,6 +64,7 @@ const AppProvider = ({ children, user, setUser, setLoading }) => {
     fetchCollections,
     // create modal context
     modalVisible,
+    setModalVisible,
     currentMode,
     setCurrentMode,
     toggleHandler,

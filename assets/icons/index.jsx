@@ -13,18 +13,8 @@ export * from "./edite.jsx";
 export * from "./back-arrow.jsx";
 export * from "./arrow.jsx";
 export * from "./filter.jsx";
-
-
-// export default {
-//   Home,
-//   Profile,
-//   Plus,
-//   Bell,
-//   X,
-//   EditeSquare,
-//   PlusSquare,
-//   Team,
-//   Check,
-//   Logo,
-//   Category,
-// };
+export * from "./time-square.jsx";
+export * from "./check-square.jsx";
+export * from "./switch.jsx";
+export * from "./cross.jsx";
+export * from "./plus2.jsx";

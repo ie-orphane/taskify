@@ -4,3 +4,6 @@ export * from "./Profile/profile-screen";
 export * from "./collection/collection-screen";
 export * from "./signup/signup-screen";
 export * from "./signin/signin-screen";
+export * from "./settings/settings-screen";
+export * from "./edit-profile/edit-profile-screen"
+export * from "./reset-password/reset-password-screen"

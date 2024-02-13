@@ -41,7 +41,7 @@ export const signIn = async (email, password) => {
   try {
     console.log("login...");
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    console.log("still login..")
+    console.log("still login..");
     const user = userCredential.user;
     await storeUserToken(user.accessToken);
     console.log("user signed in:", user.uid);
@@ -60,7 +60,7 @@ export const onUserStateChanged = (callback) => {
       const userData = await fetchUserById(user.uid);
       callback({ ...user, ...userData });
     } else {
-      console.log("anynomus user: ", user)
+      console.log("anynomus user: ", user);
       callback(user);
     }
   });

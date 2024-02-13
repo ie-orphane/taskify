@@ -1,12 +1,12 @@
 import { NavigationContainer } from "@react-navigation/native";
-import { AuthNavigation } from "./app/navigation/auth-navigation";
 import { AppProvider } from "./context";
 import { onUserStateChanged } from "./services/firebase";
 import { useEffect, useState } from "react";
 import ExpoStatusBar from "expo-status-bar/build/ExpoStatusBar";
-import { TabNavigation } from "./app/navigation/tab";
 import { View } from "react-native";
 import { Logo } from "./assets/icons";
+import { AuthNavigation } from "./app/navigation/auth";
+import { MainNavigation } from "./app/navigation/main";
 
 export default function App() {
   const [user, setUser] = useState(null);
@@ -14,7 +14,7 @@ export default function App() {
 
   useEffect(() => {
     const unsubscribe = onUserStateChanged(setUser);
-    console.log(user)
+    console.log(user);
     return () => unsubscribe();
   }, []);
 
@@ -26,7 +26,7 @@ export default function App() {
             <Logo />
           </View>
         ) : user ? (
-          <TabNavigation />
+          <MainNavigation />
         ) : (
           <AuthNavigation />
         )}
