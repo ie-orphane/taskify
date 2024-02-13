@@ -5,7 +5,7 @@ import { useAppContext } from "../../../../context";
 
 export const CollectionsComponent = () => {
   const navigate = useNavigation();
-  const { Collections } = useAppContext();
+  const { Tasks, Collections } = useAppContext();
 
   return (
     <View className="py-4 bg-white">
@@ -36,18 +36,36 @@ export const CollectionsComponent = () => {
               <View className="flex-row justify-between pb-2">
                 <Text className="text-white/[62.5%]">Progress</Text>
                 <Text className="text-white/[62.5%]">
-                  {Math.trunc((item.completedTasks / item.tasks.length || 0) * 100)}%
+                  {Math.trunc(
+                    (Tasks.filter((task) => task.collectionId == item.id && task.completed).length /
+                      item.tasks.length || 0) * 100
+                  )}
+                  %
                 </Text>
               </View>
 
               {/* progress bar */}
               <View className="flex-row gap-1">
-                {item.getProgressBar().map((width, index) => (
+                {/* {getProgressBar(item).map((width, index) => (
                   <View key={index} className="flex-1 h-[6] relative">
                     <View className="bg-white/25 h-[6] w-[100%] flex-1 rounded absolute"></View>
                     <View style={width} className={`bg-white h-[6] rounded absolute`}></View>
                   </View>
-                ))}
+                ))} */}
+                <View className="flex-1 h-[6] relative">
+                  <View className="bg-white/25 h-[6] w-[100%] flex-1 rounded absolute"></View>
+                  <View
+                    style={{
+                      width: `${
+                        (Tasks.filter((task) => task.collectionId == item.id && task.completed)
+                          .length /
+                          item.tasks.length) *
+                          100 || 0
+                      }%`,
+                    }}
+                    className="bg-white h-[6] rounded absolute"
+                  ></View>
+                </View>
               </View>
             </View>
 

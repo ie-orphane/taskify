@@ -102,7 +102,7 @@ export const CreateTask = () => {
   return (
     <>
       {["name", "note"].map((title, index) => (
-        <View key={index} className="w-full mb-6 bg-white">
+        <View key={index} className="w-full mb-2 bg-white rounded-lg py-1 px-2">
           <Text className="text-lg tracking-wider text-black/[32.5%] font-medium mb-1">
             Task {capitalize(title)}
           </Text>
@@ -118,7 +118,7 @@ export const CreateTask = () => {
         </View>
       ))}
 
-      <View className="w-full mb-6 bg-white">
+      <View className="w-full mb-2 bg-white rounded-lg py-1 px-2">
         <Text className="text-lg tracking-wider text-black/[32.5%] font-medium mb-1">
           Collection
         </Text>
@@ -162,7 +162,7 @@ export const CreateTask = () => {
         ) : null}
       </View>
 
-      <View className="w-full mb-6 bg-white">
+      <View className="w-full mb-2 bg-white rounded-lg py-1 px-2">
         <Text className="text-lg tracking-wider text-black/[32.5%] font-medium mb-1">Date</Text>
         <Text
           style={{ borderColor: COLORS.primary + "1f" }}
@@ -185,7 +185,7 @@ export const CreateTask = () => {
 
       <View className="flex-row justify-between w-full">
         {["start", "end"].map((title, index) => (
-          <View key={index} className="w-[47.5%]">
+          <View key={index} className="w-[49%] bg-white rounded-lg py-1 px-2">
             <Text className="text-lg tracking-wider text-black/[32.5%] font-medium mb-1">
               {capitalize(title)} Time
             </Text>
@@ -213,7 +213,7 @@ export const CreateTask = () => {
       <Pressable
         onPress={handleAddTask}
         style={SHADOWS.medium}
-        className="bg-primary rounded-2xl py-3 w-[75%] mt-6"
+        className="bg-primary rounded-2xl py-3 w-[75%] mt-4"
       >
         <Text className="text-white text-2xl text-center">Add Task</Text>
       </Pressable>

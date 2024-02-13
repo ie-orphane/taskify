@@ -73,7 +73,7 @@ export const CollectionScreen = ({ route }) => {
             <CircularProgressBar
               radius={28.5}
               strokeWidth={4}
-              progress={item.completedTasks}
+              progress={Tasks.filter((task) => task.collectionId == item.id && task.completed).length}
               maxValue={item.tasks.length}
               color={item.color}
               // classname="ml-auto p-20"

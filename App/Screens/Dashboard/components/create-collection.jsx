@@ -81,7 +81,7 @@ export const CreateCollection = () => {
   return (
     <>
       {["name", "description"].map((title, index) => (
-        <View key={index} className="w-full mb-6">
+        <View key={index} className="w-full mb-3 bg-white rounded-lg py-1 px-2">
           <Text className="text-lg tracking-wider text-black/[32.5%] font-medium mb-1">
             Collection {capitalize(title)}
           </Text>
@@ -97,11 +97,11 @@ export const CreateCollection = () => {
         </View>
       ))}
 
-      <View className="w-full mb-6">
+      <View className="w-full bg-white rounded-lg py-1 px-2">
         <Text className="text-lg tracking-wider text-black/[32.5%] font-medium mb-1">
           Choose a color:
         </Text>
-        <View className="flex-wrap flex-row px-12">
+        <View className="flex-wrap flex-row px-12 justify-center">
           {radioOptions.map((option, index) => (
             <Pressable
               key={index}
@@ -126,7 +126,7 @@ export const CreateCollection = () => {
       <Pressable
         onPress={handleAddCollection}
         style={SHADOWS.medium}
-        className="bg-primary rounded-2xl py-3 w-[75%] mt-6"
+        className="bg-primary rounded-2xl py-3 w-[75%] mt-4"
       >
         <Text className="text-white text-2xl text-center">Add Collection</Text>
       </Pressable>

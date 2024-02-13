@@ -1,4 +1,4 @@
-export * from "./Home/home-screen";
+export * from "./home/home-screen";
 export * from "./Dashboard/dashboard-screen";
 export * from "./Profile/profile-screen";
 export * from "./collection/collection-screen";

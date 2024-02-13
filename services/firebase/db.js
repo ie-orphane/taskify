@@ -67,28 +67,17 @@ export const updateDataBase = async (docName, docId, fieldName, fieldValue) => {
   }
 };
 
-// export const addCollection = async (colName, docData) => {
-//   try {
-//     console.log(`${bg.blue} adding ${br} new ${colName}`);
-//     const colRef = collection(db, "collections");
-//     await addDoc(colRef, { ...docData, createdAt: new Date() });
-//     console.log(`${bg.green} success ${br} [db/addCollection]`);
-//   } catch (error) {
-//     console.error("db/addCollection:", error.message);
-//   }
-// };
-
 export const addTask = async (task) => {
   try {
     console.log(`${bg.blue} adding ${br} new Task`);
     const tasksCollection = collection(db, "tasks");
     await addDoc(tasksCollection, { ...task, createdAt: new Date() });
 
-    const collectionRef = doc(db, 'collections', task.collectionId);
+    const collectionRef = doc(db, "collections", task.collectionId);
     await updateDoc(collectionRef, {
       tasks: arrayUnion(task.collectionId),
-    })
-    
+    });
+
     console.log(`${bg.green} success ${br} [db/addTask]`);
   } catch (error) {
     console.error("db/addTask:", error.message);
@@ -116,24 +105,3 @@ export const addUser = async (uid, user) => {
     console.error("db/addUser:", error.message);
   }
 };
-
-// export const updateDataBase = async (task) => {
-//   try {
-//     console.log(`${bg.magenta} updating ${br} db`);
-//     const TaskRef = doc(db, "tasks", task.id);
-//     const newCompletedValue = !task.completed;
-//     await updateDoc(TaskRef, {
-//       completed: newCompletedValue,
-//     });
-    
-//     const docRef = doc(db, "collections", task.collectionId);
-//     const newCompledTasksValue = !task.completed ? ;
-//     await updateDoc(docRef, {
-//       completedTasks: newCompledTasksValue,
-//     });
-//     console.log(`${bg.green} success ${br} [db/updateDataBase]`);
-//   } catch (error) {
-//     console.error("Error updating task: ", error);
-//   }
-// };
-
