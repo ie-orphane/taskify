@@ -4,8 +4,8 @@ import { getFirestore } from "firebase/firestore";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCzW33sGpVjRu-ZVpFeKhYshYU3V4T5Y8A",
-  projectId: "active-cable-392010",
+  apiKey: "...",
+  projectId: "...",
 };
 
 const app = initializeApp(firebaseConfig);
